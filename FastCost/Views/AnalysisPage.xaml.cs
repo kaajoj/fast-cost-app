@@ -71,7 +71,7 @@ public partial class AnalysisPage : ContentPage
 
     private async void DatePicker_DateSelected(object sender, DateChangedEventArgs e)
     {
-        DateTime selectedDate = e.NewDate;
+        DateTime selectedDate = (DateTime)e.NewDate;
 
         GroupCosts.Clear();
         var groupCosts = await _allCostsService?.GetCostsByMonthGroupByCategory(selectedDate);

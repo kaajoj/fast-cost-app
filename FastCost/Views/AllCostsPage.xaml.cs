@@ -51,7 +51,7 @@ public partial class AllCostsPage : ContentPage
 
     private async void MyDatePicker_DateSelected(object sender, DateChangedEventArgs e)
     {
-        DateTime selectedDate = e.NewDate;
+        DateTime selectedDate = (DateTime)e.NewDate;
 
         ((AllCosts)BindingContext)?.Costs.Clear();
         var costs = await _allCostsService.LoadCostsByMonth(selectedDate);
