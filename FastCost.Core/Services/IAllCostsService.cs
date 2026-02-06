@@ -1,7 +1,7 @@
-﻿using FastCost.DAL.Entities;
-using FastCost.Models;
+﻿using FastCost.Core.Models;
+using FastCost.DAL.Entities;
 
-namespace FastCost.Services
+namespace FastCost.Core.Services
 {
     public interface IAllCostsService
     {

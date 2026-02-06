@@ -1,4 +1,5 @@
-﻿using FastCost.DAL.Entities;
+﻿using FastCost.Core.DAL.Entities;
+using FastCost.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastCost.Core.DAL;

@@ -1,8 +1,9 @@
-﻿using FastCost.DAL.Entities;
-using FastCost.Models;
+﻿using FastCost.Core.DAL.Entities;
+using FastCost.Core.Models;
+using FastCost.DAL.Entities;
 using Mapster;
 
-namespace FastCost.Mappings
+namespace FastCost.Core.Mappings
 {
     public static class MapsterConfig
     {

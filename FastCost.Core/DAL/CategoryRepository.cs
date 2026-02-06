@@ -1,8 +1,7 @@
-﻿using FastCost.Core.DAL;
-using FastCost.DAL.Entities;
+﻿using FastCost.Core.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace FastCost.DAL
+namespace FastCost.Core.DAL
 {
     public class CategoryRepository : ICategoryRepository
     {

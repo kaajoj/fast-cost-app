@@ -1,4 +1,4 @@
-﻿using FastCost.DAL;
+﻿using FastCost.Core.DAL;
 using System.Globalization;
 
 namespace FastCost.Views;

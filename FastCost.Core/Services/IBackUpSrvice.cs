@@ -1,4 +1,4 @@
-﻿namespace FastCost.Services
+﻿namespace FastCost.Core.Services
 {
     public interface IBackUpSrvice
     {

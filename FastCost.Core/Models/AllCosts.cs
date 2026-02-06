@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace FastCost.Models
+namespace FastCost.Core.Models
 {
     public class AllCosts : INotifyPropertyChanged
     {

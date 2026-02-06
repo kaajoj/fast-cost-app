@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace FastCost.Models
+namespace FastCost.Core.Models
 {
     public partial class CostModel : INotifyPropertyChanged
     {

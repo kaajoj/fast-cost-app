@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FastCost.DAL.Entities;
+using FastCost.Core.DAL.Entities;
 
-namespace FastCost.Models
+namespace FastCost.Core.Models
 {
     public class AllCostsGroup : INotifyPropertyChanged
     {

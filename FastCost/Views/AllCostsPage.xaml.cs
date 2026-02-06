@@ -1,5 +1,5 @@
-﻿using FastCost.Models;
-using FastCost.Services;
+﻿using FastCost.Core.Models;
+using FastCost.Core.Services;
 using Mapster;
 
 namespace FastCost.Views;

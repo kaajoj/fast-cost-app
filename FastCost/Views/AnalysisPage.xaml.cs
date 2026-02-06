@@ -1,5 +1,5 @@
-﻿using FastCost.Models;
-using FastCost.Services;
+﻿using FastCost.Core.Models;
+using FastCost.Core.Services;
 using System.Collections.ObjectModel;
 
 namespace FastCost.Views;

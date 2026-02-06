@@ -1,4 +1,4 @@
-﻿namespace FastCost.Models
+﻿namespace FastCost.Core.Models
 {
     public class CategoryModel
     {

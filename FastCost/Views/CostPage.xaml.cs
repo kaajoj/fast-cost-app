@@ -1,6 +1,6 @@
-﻿using FastCost.DAL;
+﻿using FastCost.Core.DAL;
+using FastCost.Core.Models;
 using FastCost.DAL.Entities;
-using FastCost.Models;
 using Mapster;
 using System.Globalization;
 

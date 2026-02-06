@@ -1,6 +1,6 @@
-﻿using FastCost.DAL.Entities;
+﻿using FastCost.Core.DAL.Entities;
 
-namespace FastCost.DAL
+namespace FastCost.Core.DAL
 {
     public interface ICategoryRepository
     {

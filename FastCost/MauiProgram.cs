@@ -1,7 +1,6 @@
 ﻿using FastCost.Core.DAL;
-using FastCost.DAL;
-using FastCost.Mappings;
-using FastCost.Services;
+using FastCost.Core.Mappings;
+using FastCost.Core.Services;
 
 namespace FastCost;
 
