@@ -17,7 +17,7 @@
     <!-- App Identifier -->
     <ApplicationId>com.companyname.fastcost</ApplicationId>
     <!-- Versions -->
-	<ApplicationVersion>5</ApplicationVersion>
+	<PackageVersion>5</PackageVersion>
     <ApplicationDisplayVersion>1.0.6</ApplicationDisplayVersion>
     <DefaultLanguage>en</DefaultLanguage>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
