@@ -1,7 +1,7 @@
 ﻿using FastCost.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace FastCost.DAL;
+namespace FastCost.Core.DAL;
 
 public partial class AppDbContext : DbContext
 {

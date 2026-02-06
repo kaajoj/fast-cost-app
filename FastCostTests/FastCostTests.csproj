@@ -11,20 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="Microsoft.Maui.Controls" />
-    <PackageReference Include="Moq" />
-    <PackageReference Include="xunit" />
-    <PackageReference Include="xunit.extensibility.core" />
-	<PackageReference Include="Mapster" />
-	<PackageReference Include="xunit.runner.visualstudio">
-	  <PrivateAssets>all</PrivateAssets>
-	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	</PackageReference>
+	  <PackageReference Include="xunit" />
+	  <PackageReference Include="xunit.runner.visualstudio" />
+	  <PackageReference Include="xunit.analyzers" />
+	  <PackageReference Include="Microsoft.NET.Test.Sdk" />
+	  <PackageReference Include="Moq" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FastCost\FastCost.csproj" />
+    <ProjectReference Include="..\FastCost.Core\FastCost.Core.csproj" />
   </ItemGroup>
 	
 </Project>

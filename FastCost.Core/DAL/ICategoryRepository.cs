@@ -2,7 +2,7 @@
 
 namespace FastCost.DAL
 {
-    interface ICategoryRepository
+    public interface ICategoryRepository
     {
         Task<List<Category>> GetCategories();
         Task<Category?> GetCategory(int id);

@@ -1,7 +1,7 @@
-﻿using FastCost.DAL;
+﻿using FastCost.Core.DAL;
+using FastCost.DAL;
 using FastCost.Mappings;
 using FastCost.Services;
-using Microsoft.Extensions.Logging;
 
 namespace FastCost;
 
