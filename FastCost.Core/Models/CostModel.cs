@@ -16,7 +16,7 @@ namespace FastCost.Core.Models
 
         public string FormattedDate => Date.ToString("dd.MM");
 
-        private DateTime _date;
+        private DateTime _date = DateTime.Now;
         public DateTime Date
         {
             get { return _date; }
@@ -30,10 +30,10 @@ namespace FastCost.Core.Models
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

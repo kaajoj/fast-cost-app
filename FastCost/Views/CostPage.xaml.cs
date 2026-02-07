@@ -1,6 +1,6 @@
 ﻿using FastCost.Core.DAL;
+using FastCost.Core.DAL.Entities;
 using FastCost.Core.Models;
-using FastCost.DAL.Entities;
 using Mapster;
 using System.Globalization;
 
@@ -68,7 +68,7 @@ public partial class CostPage : ContentPage
             int? categoryId = ((CostModel)BindingContext).CategoryId;
             if (categoryId != null)
             {
-                _categoryDict.TryGetValue((int)categoryId, out string labelName);
+                _categoryDict.TryGetValue((int)categoryId, out var labelName);
 
                 if (!string.IsNullOrEmpty(labelName))
                 {
@@ -120,11 +120,11 @@ public partial class CostPage : ContentPage
         }
         catch (ArgumentNullException)
         {
-            await DisplayAlert("Unable to add cost", "Cost value was not valid.", "OK");
+            await DisplayAlertAsync("Unable to add cost", "Cost value was not valid.", "OK");
         }
         catch (Exception)
         {
-            await DisplayAlert("Unable to add cost", "Cost adding failed.", "OK");
+            await DisplayAlertAsync("Unable to add cost", "Cost adding failed.", "OK");
         }
     }
 
@@ -134,7 +134,7 @@ public partial class CostPage : ContentPage
         {
             var cost = costModel.Adapt<Cost>();
 
-            if (await DisplayAlert("Delete cost", "Do you want to remove the cost with the value: " + cost.Value + "?", "Yes", "No"))
+            if (await DisplayAlertAsync("Delete cost", "Do you want to remove the cost with the value: " + cost.Value + "?", "Yes", "No"))
             {
                 await _costRepository.DeleteCostAsync(cost);
                 await Shell.Current.GoToAsync("..");

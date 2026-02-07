@@ -1,4 +1,4 @@
-﻿using FastCost.DAL.Entities;
+﻿using FastCost.Core.DAL.Entities;
 
 namespace FastCost.Core.DAL
 {

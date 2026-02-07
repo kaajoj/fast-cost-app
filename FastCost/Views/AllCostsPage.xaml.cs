@@ -1,7 +1,6 @@
 ﻿using FastCost.Core.Models;
 using FastCost.Core.Services;
 using Mapster;
-using Microsoft.Maui.Controls;
 
 namespace FastCost.Views;
 

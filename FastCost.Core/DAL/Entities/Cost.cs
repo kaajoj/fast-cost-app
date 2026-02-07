@@ -1,8 +1,7 @@
-﻿using FastCost.Core.DAL.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FastCost.DAL.Entities
+namespace FastCost.Core.DAL.Entities
 {
     [Table("costs")]
     public class Cost

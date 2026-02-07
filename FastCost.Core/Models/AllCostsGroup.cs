@@ -9,7 +9,7 @@ namespace FastCost.Core.Models
     {
         public ObservableCollection<IGrouping<Category, CostModel>> GroupCosts { get; set; } = new();
 
-        private string _selectedDate;
+        private string _selectedDate = string.Empty;
         public string SelectedDate
         {
             get
@@ -19,6 +19,7 @@ namespace FastCost.Core.Models
             set
             {
                 _selectedDate = value;
+                OnPropertyChanged();
             }
         }
 
@@ -36,9 +37,9 @@ namespace FastCost.Core.Models
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

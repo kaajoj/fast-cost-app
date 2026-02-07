@@ -1,5 +1,5 @@
-﻿using FastCost.Core.Models;
-using FastCost.DAL.Entities;
+﻿using FastCost.Core.DAL.Entities;
+using FastCost.Core.Models;
 
 namespace FastCost.Core.Services
 {

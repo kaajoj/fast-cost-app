@@ -2,7 +2,6 @@
 using FastCost.Core.DAL.Entities;
 using FastCost.Core.Models;
 using FastCost.Core.Services;
-using FastCost.DAL.Entities;
 using Mapster;
 using Moq;
 using Xunit;
