@@ -1,6 +1,8 @@
 ﻿using FastCost.Core.DAL;
 using FastCost.Core.Mappings;
 using FastCost.Core.Services;
+using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 
 namespace FastCost;
 
@@ -12,7 +14,8 @@ public static class MauiProgram
 
 		builder
 			.UseMauiApp<App>()
-			.ConfigureFonts(fonts =>
+            .UseMauiCommunityToolkit()
+            .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");

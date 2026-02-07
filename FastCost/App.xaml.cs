@@ -1,5 +1,5 @@
-﻿using FastCost.Core.Services;
-using FastCost.DAL;
+﻿using FastCost.Core.DAL;
+using FastCost.Core.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastCost;

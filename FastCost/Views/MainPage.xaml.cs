@@ -1,5 +1,6 @@
 ﻿using FastCost.Core.DAL;
 using System.Globalization;
+using Microsoft.Maui.Controls;
 
 namespace FastCost.Views;
 
