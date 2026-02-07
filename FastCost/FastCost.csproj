@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFrameworks>net10.0-android;net10.0-windows</TargetFrameworks>
-	<OutputType Condition="'$(TargetFramework)' != 'net10.0'">Exe</OutputType>
 	<RootNamespace>FastCost</RootNamespace>
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
@@ -20,7 +19,7 @@
 	<PackageVersion>5</PackageVersion>
     <ApplicationDisplayVersion>1.0.6</ApplicationDisplayVersion>
     <DefaultLanguage>en</DefaultLanguage>
-    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">24.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -55,17 +54,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FastCost.Core\FastCost.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <MauiXaml Update="Views\AllCostsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\AnalysisPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
-    <MauiXaml Update="Views\CostPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </MauiXaml>
   </ItemGroup>
 </Project>
