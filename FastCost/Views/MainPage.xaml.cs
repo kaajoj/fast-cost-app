@@ -1,6 +1,5 @@
 ﻿using FastCost.Core.DAL;
 using System.Globalization;
-using Microsoft.Maui.Controls;
 
 namespace FastCost.Views;
 
@@ -83,11 +82,11 @@ public partial class MainPage : ContentPage
             }
             catch (ArgumentNullException)
             {
-                await DisplayAlert("Unable to add cost", "Cost value was not valid.", "OK");
+                await DisplayAlertAsync("Unable to add cost", "Cost value was not valid.", "OK");
             }
             catch (Exception)
             {
-                await DisplayAlert("Unable to add cost", "Cost adding failed.", "OK");
+                await DisplayAlertAsync("Unable to add cost", "Cost adding failed.", "OK");
             }
         }
     }
