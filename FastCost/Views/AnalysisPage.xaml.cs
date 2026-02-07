@@ -51,20 +51,22 @@ public partial class AnalysisPage : ContentPage
         var currentDate = SelectedDate;
 
         GroupCosts.Clear();
-        var groupCosts = await _allCostsService?.GetCostsByMonthGroupByCategory(currentDate);
+        var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(currentDate);
         foreach (var costGroup in groupCosts)
         {
-            decimal? sumGroup = decimal.Zero;
+            decimal sumGroup = decimal.Zero;
             foreach (var cost in costGroup)
             {
-                sumGroup += cost.Value;
+                sumGroup += cost.Value.GetValueOrDefault();
             }
-            costGroup.Key.SumValue = sumGroup;
+            costGroup.Key.SumValue = (decimal?)sumGroup;
 
             GroupCosts.Add(costGroup);
         }
 
-        Sum = await _allCostsService.GetSum(currentDate);
+#nullable disable
+        Sum = (decimal)await _allCostsService.GetSum(currentDate);
+#nullable enable
 
         BindingContext = this;
     }
@@ -74,20 +76,22 @@ public partial class AnalysisPage : ContentPage
         DateTime selectedDate = (DateTime)e.NewDate;
 
         GroupCosts.Clear();
-        var groupCosts = await _allCostsService?.GetCostsByMonthGroupByCategory(selectedDate);
+        var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(selectedDate);
         foreach (var costGroup in groupCosts)
         {
-            decimal? sumGroup = decimal.Zero;
+            decimal sumGroup = decimal.Zero;
             foreach (var cost in costGroup)
             {
-                sumGroup += cost.Value;
+                sumGroup += cost.Value.GetValueOrDefault();
             }
-            costGroup.Key.SumValue = sumGroup;
+            costGroup.Key.SumValue = (decimal?)sumGroup;
 
             GroupCosts.Add(costGroup);
         }
 
-        Sum = await _allCostsService.GetSum(selectedDate);
+#nullable disable
+        Sum = (decimal)await _allCostsService.GetSum(selectedDate);
+#nullable enable
 
         BindingContext = this;
     }

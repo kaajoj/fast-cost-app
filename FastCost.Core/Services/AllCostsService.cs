@@ -31,7 +31,7 @@ namespace FastCost.Core.Services
             return costs.Sum(c => c.Value);
         }
 
-        public async Task<IEnumerable<IGrouping<CategoryModel?, CostModel>>> GetCostsByMonthGroupByCategory(DateTime date)
+        public async Task<IEnumerable<IGrouping<CategoryModel, CostModel>>> GetCostsByMonthGroupByCategory(DateTime date)
         {
             var results = await _costRepository.GetCostsByMonth(date);
             var costs = results.Adapt<List<CostModel>>();

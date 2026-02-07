@@ -28,10 +28,14 @@ namespace FastCost.Services
 
             File.WriteAllLines(filePath, lines);
 
-            if (!File.Exists(filePath)) ;
-                //await DisplayAlert("Failure", $"Error writing to file. File path: {filePath}", "OK");
-
-            //await DisplayAlert("Success", $"Costs data exported to file. File path: {filePath}", "OK");
+            if (!File.Exists(filePath))
+            {
+                await Shell.Current.DisplayAlertAsync("Failure", $"Error writing to file. File path: {filePath}", "OK");
+            }
+            else
+            {
+                await Shell.Current.DisplayAlertAsync("Success", $"Costs data exported to file. File path: {filePath}", "OK");
+            }
         }
     }
 }

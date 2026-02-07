@@ -44,7 +44,7 @@ public partial class MainPage : ContentPage
                 {
                     CostBtn.IsEnabled = true;
                     CostBtn.BackgroundColor = Color.Parse("Lime");
-                    CostBtn.Handler.UpdateValue("Background");
+                    CostBtn.Handler?.UpdateValue("Background");
                 }
             }
             else
@@ -52,7 +52,7 @@ public partial class MainPage : ContentPage
                 CostText.Text = string.Empty;
                 CostBtn.IsEnabled = false;
                 CostBtn.BackgroundColor = Color.Parse("LightGray");
-                CostBtn.Handler.UpdateValue("Background");
+                CostBtn.Handler?.UpdateValue("Background");
             }
         }
         catch (Exception ex)

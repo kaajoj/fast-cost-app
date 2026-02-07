@@ -11,8 +11,8 @@ namespace FastCost.Views;
 public partial class CostPage : ContentPage
 {
     private readonly ICostRepository _costRepository;
-    private string _selectedCategory;
-    private Label _previousSelectedLabel;
+    private string? _selectedCategory = null;
+    private Label? _previousSelectedLabel = null;
     private readonly Dictionary<int, string> _categoryDict;
 
     public CostPage(ICostRepository costRepository) 
@@ -45,7 +45,7 @@ public partial class CostPage : ContentPage
         set { _ = LoadCostAsync(value); }
     }
 
-    public string CostValue { get; set; }
+    public required string CostValue { get; set; }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs state)
     {

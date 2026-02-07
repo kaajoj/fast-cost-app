@@ -8,6 +8,6 @@ namespace FastCost.Core.Services
         public Task<List<Cost>> LoadCostsBackUp();
         public Task<List<Cost>> LoadCostsByMonth(DateTime date);
         public Task<decimal> GetSum(DateTime date);
-        public Task<IEnumerable<IGrouping<CategoryModel?, CostModel>>> GetCostsByMonthGroupByCategory(DateTime date);
+        public Task<IEnumerable<IGrouping<CategoryModel, CostModel>>> GetCostsByMonthGroupByCategory(DateTime date);
     }
 }
