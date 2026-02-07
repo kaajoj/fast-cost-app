@@ -82,19 +82,39 @@ namespace FastCostTests.Services
 
             foreach (var expectedGroup in expected)
             {
-                var actualGroup = result.First(g => g.Key.Id == expectedGroup.Key.Id);
-                Assert.Equal(expectedGroup.Key.Id, actualGroup.Key.Id);
-                Assert.Equal(expectedGroup.Key.Name, actualGroup.Key.Name);
-                Assert.Equal(expectedGroup.Count(), actualGroup.Count());
-
-                foreach (var expectedCost in expectedGroup)
+                if (expectedGroup.Key == null)
                 {
-                    var actualCost = actualGroup.First(c => c.Id == expectedCost.Id);
-                    Assert.Equal(expectedCost.Id, actualCost.Id);
-                    Assert.Equal(expectedCost.Value, actualCost.Value);
-                    Assert.Equal(expectedCost.Description, actualCost.Description);
-                    Assert.Equal(expectedCost.Date, actualCost.Date);
-                    Assert.Equal(expectedCost.CategoryId, actualCost.CategoryId);
+                    // Handle costs with null category
+                    var actualGroup = result.SingleOrDefault(g => g.Key == null);
+                    Assert.NotNull(actualGroup);
+                    Assert.Equal(expectedGroup.Count(), actualGroup.Count());
+                    foreach (var expectedCost in expectedGroup)
+                    {
+                        var actualCost = actualGroup.First(c => c.Id == expectedCost.Id);
+                        Assert.Equal(expectedCost.Id, actualCost.Id);
+                        Assert.Equal(expectedCost.Value, actualCost.Value);
+                        Assert.Equal(expectedCost.Description, actualCost.Description);
+                        Assert.Equal(expectedCost.Date, actualCost.Date);
+                        Assert.Equal(expectedCost.CategoryId, actualCost.CategoryId);
+                    }
+                }
+                else
+                {
+                    var actualGroup = result.SingleOrDefault(g => g.Key?.Id == expectedGroup.Key.Id);
+                    Assert.NotNull(actualGroup);
+                    Assert.Equal(expectedGroup.Key.Id, actualGroup.Key?.Id);
+                    Assert.Equal(expectedGroup.Key.Name, actualGroup.Key?.Name);
+                    Assert.Equal(expectedGroup.Count(), actualGroup.Count());
+
+                    foreach (var expectedCost in expectedGroup)
+                    {
+                        var actualCost = actualGroup.First(c => c.Id == expectedCost.Id);
+                        Assert.Equal(expectedCost.Id, actualCost.Id);
+                        Assert.Equal(expectedCost.Value, actualCost.Value);
+                        Assert.Equal(expectedCost.Description, actualCost.Description);
+                        Assert.Equal(expectedCost.Date, actualCost.Date);
+                        Assert.Equal(expectedCost.CategoryId, actualCost.CategoryId);
+                    }
                 }
             }
         }
