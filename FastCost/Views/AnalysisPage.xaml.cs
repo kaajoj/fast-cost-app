@@ -64,35 +64,34 @@ public partial class AnalysisPage : ContentPage
             GroupCosts.Add(costGroup);
         }
 
-#nullable disable
-        Sum = (decimal)await _allCostsService.GetSum(currentDate);
-#nullable enable
+        Sum = await _allCostsService.GetSum(currentDate);
 
         BindingContext = this;
     }
 
-    private async void DatePicker_DateSelected(object sender, DateChangedEventArgs e)
+    private async Task DatePicker_DateSelected(object sender, DateChangedEventArgs e)
     {
-        DateTime selectedDate = (DateTime)e.NewDate;
-
-        GroupCosts.Clear();
-        var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(selectedDate);
-        foreach (var costGroup in groupCosts)
+        if(e.NewDate != null)
         {
-            decimal sumGroup = decimal.Zero;
-            foreach (var cost in costGroup)
+            DateTime selectedDate = (DateTime)e.NewDate;
+
+            GroupCosts.Clear();
+            var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(selectedDate);
+            foreach (var costGroup in groupCosts)
             {
-                sumGroup += cost.Value.GetValueOrDefault();
+                decimal sumGroup = decimal.Zero;
+                foreach (var cost in costGroup)
+                {
+                    sumGroup += cost.Value.GetValueOrDefault();
+                }
+                costGroup.Key.SumValue = (decimal?)sumGroup;
+
+                GroupCosts.Add(costGroup);
             }
-            costGroup.Key.SumValue = (decimal?)sumGroup;
 
-            GroupCosts.Add(costGroup);
+            Sum = await _allCostsService.GetSum(selectedDate);
+
+            BindingContext = this;
         }
-
-#nullable disable
-        Sum = (decimal)await _allCostsService.GetSum(selectedDate);
-#nullable enable
-
-        BindingContext = this;
     }
 }

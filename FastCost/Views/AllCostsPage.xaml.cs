@@ -31,9 +31,7 @@ public partial class AllCostsPage : ContentPage
                 allCosts.Costs.Add(cost);
             }
 
-#nullable disable
-            allCosts.Sum = (decimal)await _allCostsService.GetSum(currentDate);
-#nullable enable
+            allCosts.Sum = await _allCostsService.GetSum(currentDate);
         }
     }
 
@@ -42,7 +40,7 @@ public partial class AllCostsPage : ContentPage
         await Shell.Current.GoToAsync(nameof(CostPage));
     }
 
-    private async void CostsCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async Task CostsCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection.Count != 0)
         {
@@ -56,22 +54,23 @@ public partial class AllCostsPage : ContentPage
         }
     }
 
-    private async void MyDatePicker_DateSelected(object sender, DateChangedEventArgs e)
+    private async Task MyDatePicker_DateSelected(object sender, DateChangedEventArgs e)
     {
-        DateTime selectedDate = (DateTime)e.NewDate;
-
-        if (BindingContext is AllCosts allCosts)
+        if (e.NewDate != null)
         {
-            allCosts.Costs.Clear();
-            var costs = await _allCostsService.LoadCostsByMonth(selectedDate);
-            foreach (CostModel cost in costs.Adapt<List<CostModel>>().OrderBy(cost => cost.Date))
-            {
-                allCosts.Costs.Add(cost);
-            }
+            DateTime selectedDate = (DateTime)e.NewDate;
 
-#nullable disable
-            allCosts.Sum = (decimal)await _allCostsService.GetSum(selectedDate);
-#nullable enable
+            if (BindingContext is AllCosts allCosts)
+            {
+                allCosts.Costs.Clear();
+                var costs = await _allCostsService.LoadCostsByMonth(selectedDate);
+                foreach (CostModel cost in costs.Adapt<List<CostModel>>().OrderBy(cost => cost.Date))
+                {
+                    allCosts.Costs.Add(cost);
+                }
+
+                allCosts.Sum = (decimal)await _allCostsService.GetSum(selectedDate);
+            }
         }
     }
 }
