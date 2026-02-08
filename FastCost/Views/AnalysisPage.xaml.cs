@@ -12,42 +12,16 @@ public partial class AnalysisPage : ContentPage
     {
         InitializeComponent();
         _allCostsService = allCostsService;
-    }
-
-    public ObservableCollection<IGrouping<CategoryModel, CostModel>> GroupCosts { get; set; } = new();
-
-    public DateTime selectedDate = DateTime.Now;
-    public DateTime SelectedDate
-    {
-        get { return selectedDate; }
-        set
-        {
-            if (selectedDate != value)
-            {
-                selectedDate = value;
-                OnPropertyChanged();
-            }
-        }
-    }
-
-    public decimal sum = 0;
-    public decimal Sum
-    {
-        get { return sum; }
-        set
-        {
-            if (sum != value)
-            {
-                sum = value;
-                OnPropertyChanged();
-            }
-        }
+        this.BindingContext = new AllCostsGroup();
     }
 
     protected override async void OnNavigatedTo(NavigatedToEventArgs state)
     {
         base.OnNavigatedTo(state);
-        await LoadAndDisplayCosts(SelectedDate);
+        if (BindingContext is AllCostsGroup allCostsGroup)
+        {
+            await LoadAndDisplayCosts(allCostsGroup.SelectedDate);
+        }
     }
 
     private async Task DatePicker_DateSelected(object sender, DateChangedEventArgs e)
@@ -60,24 +34,25 @@ public partial class AnalysisPage : ContentPage
 
     private async Task LoadAndDisplayCosts(DateTime date)
     {
-        SelectedDate = date; // Update the bindable property
-
-        GroupCosts.Clear();
-        var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(date);
-        foreach (var costGroup in groupCosts)
+        if (BindingContext is AllCostsGroup allCostsGroup)
         {
-            decimal sumGroup = decimal.Zero;
-            foreach (var cost in costGroup)
+            allCostsGroup.SelectedDate = date; // Update the bindable property
+
+            allCostsGroup.GroupCosts.Clear();
+            var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(date);
+            foreach (var costGroup in groupCosts)
             {
-                sumGroup += cost.Value.GetValueOrDefault();
+                decimal sumGroup = decimal.Zero;
+                foreach (var cost in costGroup)
+                {
+                    sumGroup += cost.Value.GetValueOrDefault();
+                }
+                costGroup.Key.SumValue = (decimal?)sumGroup;
+
+                allCostsGroup.GroupCosts.Add(costGroup);
             }
-            costGroup.Key.SumValue = (decimal?)sumGroup;
 
-            GroupCosts.Add(costGroup);
+            allCostsGroup.Sum = await _allCostsService.GetSum(date);
         }
-
-        Sum = await _allCostsService.GetSum(date);
-
-        BindingContext = this;
     }
 }
