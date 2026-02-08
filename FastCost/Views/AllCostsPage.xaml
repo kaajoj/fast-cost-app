@@ -6,7 +6,7 @@
              Title="All Costs">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="" Clicked="Add_Clicked" IconImageSource="{FontImage Glyph='+', Size=32}" />
+        <ToolbarItem Text="" Clicked="Add_Clicked" IconImageSource="{FontImageSource Glyph='+', Size=32, FontFamily=OpenSansRegular, Color={StaticResource White}}" />
     </ContentPage.ToolbarItems>
 
         <VerticalStackLayout Spacing="0" Margin="5">    
