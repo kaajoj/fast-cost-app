@@ -57,7 +57,7 @@ public partial class CostPage : ContentPage
         }
     }
 
-    private string costValue;
+    private string costValue = string.Empty;
     public string CostValue
     {
         get => costValue;
