@@ -5,10 +5,6 @@
              x:Class="FastCost.Views.AllCostsPage"
              Title="All Costs">
 
-    <ContentPage.BindingContext>
-        <models:AllCosts />
-    </ContentPage.BindingContext>
-
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="" Clicked="Add_Clicked" IconImageSource="{FontImage Glyph='+', Size=32}" />
     </ContentPage.ToolbarItems>

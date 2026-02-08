@@ -12,6 +12,7 @@ public partial class AllCostsPage : ContentPage
 	{
         InitializeComponent();
         _allCostsService = allCostsService;
+        this.BindingContext = new AllCosts();
     }
 
     protected override async void OnNavigatedTo(NavigatedToEventArgs state)
