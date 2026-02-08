@@ -20,7 +20,6 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ScrollView>
             <VerticalStackLayout Spacing="10" Margin="20">
 
                 <DatePicker x:Name="AnalysisPageDatePicker"
@@ -54,6 +53,5 @@
 
                 </CollectionView>
             </VerticalStackLayout>
-        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

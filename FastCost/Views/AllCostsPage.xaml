@@ -13,7 +13,6 @@
         <ToolbarItem Text="" Clicked="Add_Clicked" IconImageSource="{FontImage Glyph='+', Size=32}" />
     </ContentPage.ToolbarItems>
 
-    <ScrollView>
         <VerticalStackLayout Spacing="0" Margin="5">    
 
         <DatePicker x:Name="allCostsDatePicker" 
@@ -79,5 +78,4 @@
         </CollectionView>
 
         </VerticalStackLayout>
-    </ScrollView>
 </ContentPage>
