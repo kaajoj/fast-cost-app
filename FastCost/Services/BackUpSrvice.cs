@@ -26,7 +26,7 @@ namespace FastCost.Services
                 lines.Add($"{cost.Id},{cost.Value},{cost.Description},{cost.Date},{cost.CategoryId}");
             }
 
-            File.WriteAllLines(filePath, lines);
+            await File.WriteAllLinesAsync(filePath, lines);
 
             if (!File.Exists(filePath))
             {
