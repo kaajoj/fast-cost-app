@@ -6,9 +6,7 @@
              x:Class="FastCost.Views.AnalysisPage"
              Title="Analysis">
 
-    <ContentPage.BindingContext>
-        <models:AllCostsGroup />
-    </ContentPage.BindingContext>
+
 
     <ContentPage.Resources>
         <DataTemplate x:Key="GroupHeaderTemplate">
