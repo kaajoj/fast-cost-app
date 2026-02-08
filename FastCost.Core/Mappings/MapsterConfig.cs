@@ -12,6 +12,11 @@ namespace FastCost.Core.Mappings
                 .Map(dest => dest.Category, src => src.Category.Adapt<CategoryModel>());
 
             TypeAdapterConfig<Category, CategoryModel>.NewConfig();
+
+            // New mapping from CostModel to Cost
+            TypeAdapterConfig<CostModel, Cost>.NewConfig()
+                .Map(dest => dest.CategoryId, src => src.CategoryId)
+                .Ignore(dest => dest.Category); // Ignore mapping the Category navigation property
         }
     }
 }
