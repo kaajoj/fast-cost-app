@@ -47,11 +47,23 @@ public partial class AnalysisPage : ContentPage
     protected override async void OnNavigatedTo(NavigatedToEventArgs state)
     {
         base.OnNavigatedTo(state);
+        await LoadAndDisplayCosts(SelectedDate);
+    }
 
-        var currentDate = SelectedDate;
+    private async Task DatePicker_DateSelected(object sender, DateChangedEventArgs e)
+    {
+        if(e.NewDate != null)
+        {
+            await LoadAndDisplayCosts((DateTime)e.NewDate);
+        }
+    }
+
+    private async Task LoadAndDisplayCosts(DateTime date)
+    {
+        SelectedDate = date; // Update the bindable property
 
         GroupCosts.Clear();
-        var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(currentDate);
+        var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(date);
         foreach (var costGroup in groupCosts)
         {
             decimal sumGroup = decimal.Zero;
@@ -64,34 +76,8 @@ public partial class AnalysisPage : ContentPage
             GroupCosts.Add(costGroup);
         }
 
-        Sum = await _allCostsService.GetSum(currentDate);
+        Sum = await _allCostsService.GetSum(date);
 
         BindingContext = this;
-    }
-
-    private async Task DatePicker_DateSelected(object sender, DateChangedEventArgs e)
-    {
-        if(e.NewDate != null)
-        {
-            DateTime selectedDate = (DateTime)e.NewDate;
-
-            GroupCosts.Clear();
-            var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(selectedDate);
-            foreach (var costGroup in groupCosts)
-            {
-                decimal sumGroup = decimal.Zero;
-                foreach (var cost in costGroup)
-                {
-                    sumGroup += cost.Value.GetValueOrDefault();
-                }
-                costGroup.Key.SumValue = (decimal?)sumGroup;
-
-                GroupCosts.Add(costGroup);
-            }
-
-            Sum = await _allCostsService.GetSum(selectedDate);
-
-            BindingContext = this;
-        }
     }
 }
