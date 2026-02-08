@@ -7,7 +7,7 @@ namespace FastCost.Core.Models
 {
     public class AllCostsGroup : INotifyPropertyChanged
     {
-        public ObservableCollection<IGrouping<Category, CostModel>> GroupCosts { get; set; } = new();
+        public ObservableCollection<IGrouping<CategoryModel, CostModel>> GroupCosts { get; set; } = new();
 
         private DateTime _selectedDate = DateTime.Now;
         public DateTime SelectedDate
