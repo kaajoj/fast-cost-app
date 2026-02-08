@@ -18,6 +18,7 @@ public partial class CostPage : ContentPage
     public CostPage(ICostRepository costRepository) 
     {
         InitializeComponent();
+        BindingContext = new CostModel();
         // this.categoriesGrid.SelectionChanged += OnCategorySelected;
 
         _costRepository = costRepository;
@@ -42,28 +43,48 @@ public partial class CostPage : ContentPage
 
     public string ItemId
     {
-        set { _ = LoadCostAsync(value); }
+        set { _ = LoadCost(value); }
     }
 
-    public required string CostValue { get; set; }
+    private async Task LoadCost(string id)
+    {
+        int.TryParse(id, out int result);
+        if (result != 0)
+        {
+            var cost = await _costRepository.GetCostAsync(result);
+            var costModel = cost.Adapt<CostModel>();
+            BindingContext = costModel;
+        }
+    }
+
+    private string costValue;
+    public string CostValue
+    {
+        get => costValue;
+        set
+        {
+            costValue = value;
+            if (!string.IsNullOrEmpty(costValue))
+            {
+                if (BindingContext is CostModel costModel)
+                {
+                    costModel.Value = decimal.Parse(costValue);
+                    costModel.Date = DateTime.UtcNow;
+                }
+            }
+        }
+    }
 
     protected override void OnNavigatedTo(NavigatedToEventArgs state)
     {
         base.OnNavigatedTo(state);
 
-        if (!string.IsNullOrEmpty(CostValue))
-        {
-            ((CostModel)BindingContext).Value = decimal.Parse(CostValue);
-            ((CostModel)BindingContext).Date = DateTime.UtcNow;
-        }
+
 
         if (((CostModel)BindingContext).Value != null && ((CostModel)BindingContext).Value != 0)
         {
             CostValueEditor.Text = ((CostModel)BindingContext).Value.ToString();
-            if (((CostModel)BindingContext).Date.Year != DateTime.UtcNow.Year)
-            {
-                ((CostModel)BindingContext).Date = DateTime.UtcNow;
-            }
+
 
             int? categoryId = ((CostModel)BindingContext).CategoryId;
             if (categoryId != null)
@@ -80,19 +101,10 @@ public partial class CostPage : ContentPage
                 }
             }
         }
-        else
-        {
-            ((CostModel)BindingContext).Date = DateTime.UtcNow;
-        }
+
     }
 
-    private async Task LoadCostAsync(string id)
-    {
-        var cost = await _costRepository.GetCostAsync(int.Parse(id));
-        var costModel = cost.Adapt<CostModel>();
 
-        BindingContext = costModel;
-    }
 
     private async void SaveButton_Clicked(object sender, EventArgs e)
     {
