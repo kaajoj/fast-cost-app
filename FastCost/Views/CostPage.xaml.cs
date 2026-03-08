@@ -79,8 +79,6 @@ public partial class CostPage : ContentPage
     {
         base.OnNavigatedTo(state);
 
-
-
         if (((CostModel)BindingContext).Value != null && ((CostModel)BindingContext).Value != 0)
         {
             CostValueEditor.Text = ((CostModel)BindingContext).Value.ToString();

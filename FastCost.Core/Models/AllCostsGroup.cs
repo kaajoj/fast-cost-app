@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using FastCost.Core.DAL.Entities;
 
 namespace FastCost.Core.Models
 {

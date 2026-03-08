@@ -45,12 +45,10 @@ public partial class AllCostsPage : ContentPage
     {
         if (e.CurrentSelection.Count != 0)
         {
-            // Get the cost model
             var cost = (CostModel)e.CurrentSelection[0];
 
             await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.ItemId)}={cost.Id}");
 
-            // Unselect the UI
             costsCollection.SelectedItem = null;
         }
     }

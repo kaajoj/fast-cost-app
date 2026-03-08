@@ -1,6 +1,5 @@
 ﻿using FastCost.Core.Models;
 using FastCost.Core.Services;
-using System.Collections.ObjectModel;
 
 namespace FastCost.Views;
 
@@ -36,7 +35,7 @@ public partial class AnalysisPage : ContentPage
     {
         if (BindingContext is AllCostsGroup allCostsGroup)
         {
-            allCostsGroup.SelectedDate = date; // Update the bindable property
+            allCostsGroup.SelectedDate = date;
 
             allCostsGroup.GroupCosts.Clear();
             var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(date);
