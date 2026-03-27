@@ -40,7 +40,7 @@
         <Editor x:Name="CostValueEditor"
                 Placeholder="enter cost value"
                 Text="{Binding Value}"
-                FontSize="26"
+                FontSize="23"
                 FontAttributes="Bold"
                 HorizontalTextAlignment="Center"
                 Keyboard="Numeric" />
@@ -48,31 +48,34 @@
         <Entry x:Name="DescriptionEditor"
                Placeholder="enter description"
                Text="{Binding Description}"
-               FontSize="26"
+               FontSize="23"
                FontAttributes="Bold"
-               HorizontalTextAlignment="Center" />
+               HorizontalTextAlignment="Center"
+               Margin="0,-8,0,0" />
 
-        <DatePicker x:Name="costDatePicker" 
+        <DatePicker x:Name="costDatePicker"
                     Date="{Binding Date}"
                     Format="dd/MM/yyyy"
-                    FontSize="24"
+                    FontSize="21"
                     HorizontalOptions="Center"
-                    />
+                    Margin="0,-10,0,0" />
 
-        <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="5">
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="2">
             <Button Grid.Column="0"
                     Text="Save"
                     FontAttributes="Bold"
+                    HeightRequest="32"
                     Clicked="SaveButton_Clicked" />
 
             <Button Grid.Column="1"
                     Text="Delete"
                     BackgroundColor="Orange"
                     FontAttributes="Bold"
+                    HeightRequest="32"
                     Clicked="DeleteButton_Clicked" />
         </Grid>
 
-        <Label Text="Select category:" FontSize="26" Padding="5" Margin="0" />
+        <Label Text="Select category:" FontSize="25" Padding="1" Margin="0" />
 
         <Grid x:Name="categoriesGrid"  RowSpacing="5" ColumnSpacing="10" Padding="0" Margin="0">
             <Grid.RowDefinitions>
@@ -94,25 +97,25 @@
             <!--     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter=""/> -->
             <!-- </Grid.GestureRecognizers> -->
 
-            <Label x:Name="LblCatC0R0" Text="🍕" FontSize="68" Grid.Column="0" Grid.Row="0">
+            <Label x:Name="LblCatC0R0" Text="🍕" FontSize="60" Grid.Column="0" Grid.Row="0">
                 <Label.GestureRecognizers>
                     <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="food"/> -->
                     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="1"/>
                 </Label.GestureRecognizers>
             </Label> 
-            <Label x:Name="LblCatC1R0" Text="🏠" FontSize="68" Grid.Column="1" Grid.Row="0">
+            <Label x:Name="LblCatC1R0" Text="🏠" FontSize="60" Grid.Column="1" Grid.Row="0">
                 <Label.GestureRecognizers>
                     <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="apartment"/> -->
                     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="2"/>
                 </Label.GestureRecognizers>
             </Label>
-            <Label x:Name="LblCatC2R0" Text="🛒" FontSize="68" Grid.Column="2" Grid.Row="0">
+            <Label x:Name="LblCatC2R0" Text="🛒" FontSize="60" Grid.Column="2" Grid.Row="0">
                 <Label.GestureRecognizers>
                     <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="shopping"/> -->
                     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="3"/>
                 </Label.GestureRecognizers>
             </Label>
-            <Label x:Name="LblCatC3R0" Text="🚗" FontSize="68" Grid.Column="3" Grid.Row="0">
+            <Label x:Name="LblCatC3R0" Text="🚗" FontSize="60" Grid.Column="3" Grid.Row="0">
                 <Label.GestureRecognizers>
                     <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="transport"/> -->
                     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="4"/>
@@ -144,25 +147,25 @@
                     </Label.GestureRecognizers>
                 </Label>
 
-            <Label x:Name="LblCatC0R2" Text="🏖" FontSize="68" Grid.Column="0" Grid.Row="2">
+            <Label x:Name="LblCatC0R2" Text="🏖" FontSize="60" Grid.Column="0" Grid.Row="2">
                 <Label.GestureRecognizers>
                     <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="trip"/> -->
                     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="5"/>
                 </Label.GestureRecognizers>
             </Label>
-            <Label x:Name="LblCatC1R2" Text="🏦" FontSize="68" Grid.Column="1" Grid.Row="2">
+            <Label x:Name="LblCatC1R2" Text="🏦" FontSize="60" Grid.Column="1" Grid.Row="2">
                 <Label.GestureRecognizers>
                     <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="bank"/> -->
                     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="6"/>
                 </Label.GestureRecognizers>
             </Label>
-            <Label x:Name="LblCatC2R2" Text="💼" FontSize="68" Grid.Column="2" Grid.Row="2">
+            <Label x:Name="LblCatC2R2" Text="💼" FontSize="60" Grid.Column="2" Grid.Row="2">
                 <Label.GestureRecognizers>
                     <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="company"/> -->
                     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="7"/>
                 </Label.GestureRecognizers>
             </Label>
-            <Label x:Name="LblCatC3R2" Text="💸" FontSize="68" Grid.Column="3" Grid.Row="2">
+            <Label x:Name="LblCatC3R2" Text="💸" FontSize="60" Grid.Column="3" Grid.Row="2">
                 <Label.GestureRecognizers>
                     <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="other"/> -->
                     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="8"/>
@@ -194,10 +197,10 @@
                     </Label.GestureRecognizers>
                 </Label>
 
-            <!-- <Label x:Name="LblCatC0R4" Text="🌅" FontSize="68" Grid.Column="0" Grid.Row="4" /> -->
-            <!-- <Label x:Name="LblCatC1R4" Text="☀️" FontSize="68" Grid.Column="1" Grid.Row="4" /> -->
-            <!-- <Label x:Name="LblCatC2R4" Text="🌇" FontSize="68" Grid.Column="2" Grid.Row="4" /> -->
-            <!-- <Label x:Name="LblCatC3R4" Text="💳" FontSize="68" Grid.Column="3" Grid.Row="4" /> -->
+            <!-- <Label x:Name="LblCatC0R4" Text="🌅" FontSize="64" Grid.Column="0" Grid.Row="4" /> -->
+            <!-- <Label x:Name="LblCatC1R4" Text="☀️" FontSize="64" Grid.Column="1" Grid.Row="4" /> -->
+            <!-- <Label x:Name="LblCatC2R4" Text="🌇" FontSize="64" Grid.Column="2" Grid.Row="4" /> -->
+            <!-- <Label x:Name="LblCatC3R4" Text="💳" FontSize="64" Grid.Column="3" Grid.Row="4" /> -->
             <!-- -->
             <!-- <Label x:Name="LblTextCatC0R5" Text="CatC0R5" FontAttributes="Bold" Grid.Column="0" Grid.Row="5" /> -->
             <!-- <Label x:Name="LblTextCatC1R5" Text="CatC1R5" FontAttributes="Bold" Grid.Column="1" Grid.Row="5" /> -->
