@@ -4,16 +4,16 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Mapster" Version="7.4.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.3" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.3">
+    <PackageVersion Include="Mapster" Version="10.0.6" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageVersion>
-    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.3" />
-    <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.41" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.51" />
     <PackageVersion Include="CommunityToolkit.Maui" Version="14.0.1" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
