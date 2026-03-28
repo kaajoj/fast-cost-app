@@ -32,18 +32,13 @@
         <!--     <TapGestureRecognizer Tapped="OnCategorySelected"/> -->
         <!-- </VerticalStackLayout.GestureRecognizers> -->
 
-        <!-- // test -->
-        <!-- <Label FontSize="22" FontAttributes="Bold" Text="{Binding Title}" VerticalOptions="End" /> -->
-        <!-- <Label FontSize="22" Text="{Binding Version}" VerticalOptions="End" /> -->
-        <!-- // test -->
-
-        <Editor x:Name="CostValueEditor"
-                Placeholder="enter cost value"
-                Text="{Binding Value}"
-                FontSize="23"
-                FontAttributes="Bold"
-                HorizontalTextAlignment="Center"
-                Keyboard="Numeric" />
+        <Entry x:Name="CostValueEditor"
+               Placeholder="enter cost value"
+               Text="{Binding Value}"
+               FontSize="23"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Center"
+               Keyboard="Numeric" />
 
         <Entry x:Name="DescriptionEditor"
                Placeholder="enter description"
