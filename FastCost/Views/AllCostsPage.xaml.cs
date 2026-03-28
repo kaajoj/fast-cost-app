@@ -8,6 +8,7 @@ namespace FastCost.Views;
 public partial class AllCostsPage : ContentPage
 {
     private readonly IAllCostsService _allCostsService;
+    private bool _isNavigating = false;
 
     public AllCostsPage(IAllCostsService allCostsService)
 	{
@@ -28,8 +29,9 @@ public partial class AllCostsPage : ContentPage
 
             var costs = await _allCostsService.LoadCostsByMonth(currentDate);
             allCosts.Costs = new ObservableCollection<CostModel>(costs.Adapt<List<CostModel>>().OrderBy(c => c.Date));
-
             allCosts.Sum = await _allCostsService.GetSum(currentDate);
+            costsCollection.SelectionMode = SelectionMode.Single;
+            _isNavigating = false;
         }
     }
 
@@ -40,15 +42,12 @@ public partial class AllCostsPage : ContentPage
 
     private async void CostsCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (e.CurrentSelection.Count != 0)
-        {
-            var cost = (CostModel)e.CurrentSelection[0];
-            costsCollection.SelectionMode = SelectionMode.None;
+        if (_isNavigating || e.CurrentSelection.Count == 0) return;
 
-            await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.ItemId)}={cost.Id}");
-
-            costsCollection.SelectionMode = SelectionMode.Single;
-        }
+        _isNavigating = true;
+        var cost = (CostModel)e.CurrentSelection[0];
+        costsCollection.SelectionMode = SelectionMode.None;
+        await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.ItemId)}={cost.Id}");
     }
 
     private async Task MyDatePicker_DateSelected(object sender, DateChangedEventArgs e)
