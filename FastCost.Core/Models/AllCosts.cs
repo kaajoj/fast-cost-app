@@ -6,7 +6,16 @@ namespace FastCost.Core.Models
 {
     public class AllCosts : INotifyPropertyChanged
     {
-        public ObservableCollection<CostModel> Costs { get; set; } = new();
+        private ObservableCollection<CostModel> _costs = new();
+        public ObservableCollection<CostModel> Costs
+        {
+            get => _costs;
+            set
+            {
+                _costs = value;
+                OnPropertyChanged();
+            }
+        }
 
         public DateTime selectedDate = DateTime.Now;
         public DateTime SelectedDate

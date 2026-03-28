@@ -1,4 +1,5 @@
-﻿using FastCost.Core.Models;
+﻿using System.Collections.ObjectModel;
+using FastCost.Core.Models;
 using FastCost.Core.Services;
 using Mapster;
 
@@ -25,12 +26,8 @@ public partial class AllCostsPage : ContentPage
         {
             currentDate = allCosts.SelectedDate;
 
-            allCosts.Costs.Clear();
             var costs = await _allCostsService.LoadCostsByMonth(currentDate);
-            foreach (CostModel cost in costs.Adapt<List<CostModel>>().OrderBy(cost => cost.Date))
-            {
-                allCosts.Costs.Add(cost);
-            }
+            allCosts.Costs = new ObservableCollection<CostModel>(costs.Adapt<List<CostModel>>().OrderBy(c => c.Date));
 
             allCosts.Sum = await _allCostsService.GetSum(currentDate);
         }
@@ -41,15 +38,16 @@ public partial class AllCostsPage : ContentPage
         await Shell.Current.GoToAsync(nameof(CostPage));
     }
 
-    private async Task CostsCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void CostsCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection.Count != 0)
         {
             var cost = (CostModel)e.CurrentSelection[0];
+            costsCollection.SelectionMode = SelectionMode.None;
 
             await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.ItemId)}={cost.Id}");
 
-            costsCollection.SelectedItem = null;
+            costsCollection.SelectionMode = SelectionMode.Single;
         }
     }
 
@@ -61,12 +59,8 @@ public partial class AllCostsPage : ContentPage
 
             if (BindingContext is AllCosts allCosts)
             {
-                allCosts.Costs.Clear();
                 var costs = await _allCostsService.LoadCostsByMonth(selectedDate);
-                foreach (CostModel cost in costs.Adapt<List<CostModel>>().OrderBy(cost => cost.Date))
-                {
-                    allCosts.Costs.Add(cost);
-                }
+                allCosts.Costs = new ObservableCollection<CostModel>(costs.Adapt<List<CostModel>>().OrderBy(c => c.Date));
 
                 allCosts.Sum = (decimal)await _allCostsService.GetSum(selectedDate);
             }
