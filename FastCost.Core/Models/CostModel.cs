@@ -7,7 +7,19 @@ namespace FastCost.Core.Models
     {
         public int Id { get; set; }
 
-        public decimal? Value { get; set; } = null;
+        private decimal? _value = null;
+        public decimal? Value
+        {
+            get => _value;
+            set
+            {
+                if (_value != value)
+                {
+                    _value = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public string? Description { get; set; }
 

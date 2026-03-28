@@ -81,9 +81,6 @@ public partial class CostPage : ContentPage
 
         if (((CostModel)BindingContext).Value != null && ((CostModel)BindingContext).Value != 0)
         {
-            CostValueEditor.Text = ((CostModel)BindingContext).Value.ToString();
-
-
             int? categoryId = ((CostModel)BindingContext).CategoryId;
             if (categoryId != null)
             {
