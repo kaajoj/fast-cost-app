@@ -8,12 +8,19 @@ public partial class AppDbContext : DbContext
     public const string DatabaseFilename = "FastCostDbSQLite.db3";
     public static string DbPath => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), DatabaseFilename);
 
+    public AppDbContext() { }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
     public DbSet<Cost> Costs { get; set; }
     public DbSet<Category> Categories { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite($"Data Source={DbPath}");
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlite($"Data Source={DbPath}");
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
