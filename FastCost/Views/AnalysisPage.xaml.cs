@@ -15,7 +15,10 @@ public partial class AnalysisPage : ContentPage
     }
 
     private async void OnSwipedRight(object sender, SwipedEventArgs e)
-        => await Shell.Current.GoToAsync("//allCosts");
+    {
+        if (DeviceInfo.Platform == DevicePlatform.WinUI) return;
+        await Shell.Current.GoToAsync("//allCosts");
+    }
 
     protected override async void OnNavigatedTo(NavigatedToEventArgs state)
     {

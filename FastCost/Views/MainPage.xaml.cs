@@ -62,7 +62,10 @@ public partial class MainPage : ContentPage
     }
 
     private async void OnSwipedLeft(object sender, SwipedEventArgs e)
-        => await Shell.Current.GoToAsync("//allCosts");
+    {
+        if (DeviceInfo.Platform == DevicePlatform.WinUI) return;
+        await Shell.Current.GoToAsync("//allCosts");
+    }
 
     private async void OnCostEntered(object sender, EventArgs e)
 	{

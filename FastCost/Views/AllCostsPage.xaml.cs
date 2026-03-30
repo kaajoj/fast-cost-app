@@ -36,10 +36,16 @@ public partial class AllCostsPage : ContentPage
     }
 
     private async void OnSwipedLeft(object sender, SwipedEventArgs e)
-        => await Shell.Current.GoToAsync("//analysis");
+    {
+        if (DeviceInfo.Platform == DevicePlatform.WinUI) return;
+        await Shell.Current.GoToAsync("//analysis");
+    }
 
     private async void OnSwipedRight(object sender, SwipedEventArgs e)
-        => await Shell.Current.GoToAsync("//mainPage");
+    {
+        if (DeviceInfo.Platform == DevicePlatform.WinUI) return;
+        await Shell.Current.GoToAsync("//mainPage");
+    }
 
     private async void Add_Clicked(object sender, EventArgs e)
     {
