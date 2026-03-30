@@ -1,4 +1,4 @@
-﻿using FastCost.Core.DAL;
+using FastCost.Core.DAL;
 using FastCost.Core.DAL.Entities;
 using FastCost.Core.Models;
 using Mapster;
@@ -11,39 +11,32 @@ namespace FastCost.Views;
 public partial class CostPage : ContentPage
 {
     private readonly ICostRepository _costRepository;
-    private string? _selectedCategory = null;
-    private Label? _previousSelectedLabel = null;
-    private readonly Dictionary<int, string> _categoryDict;
+    private readonly ICategoryRepository _categoryRepository;
+    private Task? _loadCostTask;
 
-    public CostPage(ICostRepository costRepository) 
+    private static readonly Dictionary<string, string> _emojiMap = new()
+    {
+        { "food",      "🍕" },
+        { "apartment", "🏠" },
+        { "shopping",  "🛒" },
+        { "transport", "🚗" },
+        { "trip",      "🏖" },
+        { "bank",      "🏦" },
+        { "company",   "💼" },
+        { "other",     "💸" }
+    };
+
+    public CostPage(ICostRepository costRepository, ICategoryRepository categoryRepository)
     {
         InitializeComponent();
         BindingContext = new CostModel();
-        // this.categoriesGrid.SelectionChanged += OnCategorySelected;
-
         _costRepository = costRepository;
-
-        _categoryDict = new Dictionary<int, string>();
-        int col = 0;
-        int row = 0;
-        for (int i = 1; i <= 8; i++)
-        {
-            _categoryDict.Add(i, $"LblCatC{col}R{row}");
-            if (i == 4)
-            {
-                col = 0;
-                row = 2;
-            }
-            else
-            {
-                col++;
-            }            
-        }
+        _categoryRepository = categoryRepository;
     }
 
     public string ItemId
     {
-        set { _ = LoadCost(value); }
+        set { _loadCostTask = LoadCost(value); }
     }
 
     private async Task LoadCost(string id)
@@ -78,28 +71,34 @@ public partial class CostPage : ContentPage
     protected override void OnNavigatedTo(NavigatedToEventArgs state)
     {
         base.OnNavigatedTo(state);
-
-        if (((CostModel)BindingContext).Value != null && ((CostModel)BindingContext).Value != 0)
-        {
-            int? categoryId = ((CostModel)BindingContext).CategoryId;
-            if (categoryId != null)
-            {
-                _categoryDict.TryGetValue((int)categoryId, out var labelName);
-
-                if (!string.IsNullOrEmpty(labelName))
-                {
-                    Label categoryLabel = (Label)this.FindByName(labelName);
-                    categoryLabel.BackgroundColor = Color.Parse("CadetBlue");
-                    categoryLabel?.Handler?.UpdateValue("Background");
-
-                    _previousSelectedLabel = categoryLabel;
-                }
-            }
-        }
-
+        _ = InitializePageAsync();
     }
 
+    private async Task InitializePageAsync()
+    {
+        if (_loadCostTask != null)
+            await _loadCostTask;
 
+        var categories = await _categoryRepository.GetCategories();
+        var items = categories
+            .Select(c => new CategoryItem(c.Id, c.Name, _emojiMap.GetValueOrDefault(c.Name, "❓")))
+            .ToList();
+
+        categoriesCollection.ItemsSource = items;
+
+        if (BindingContext is CostModel costModel && costModel.CategoryId != null)
+        {
+            categoriesCollection.SelectedItem = items.FirstOrDefault(c => c.Id == costModel.CategoryId);
+        }
+    }
+
+    private void OnCategorySelected(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.FirstOrDefault() is CategoryItem selected)
+        {
+            ((CostModel)BindingContext).CategoryId = selected.Id;
+        }
+    }
 
     private async void SaveButton_Clicked(object sender, EventArgs e)
     {
@@ -118,7 +117,6 @@ public partial class CostPage : ContentPage
             if (BindingContext is CostModel costModel)
             {
                 costModel.Value = enteredCost;
-
                 var cost = costModel.Adapt<Cost>();
                 await _costRepository.SaveCostAsync(cost);
             }
@@ -150,28 +148,5 @@ public partial class CostPage : ContentPage
         }
     }
 
-    private void OnCategorySelected(object sender, TappedEventArgs args)
-    {
-        if (_previousSelectedLabel != null)
-        {
-            _previousSelectedLabel.BackgroundColor = Application.Current?.PlatformAppTheme == AppTheme.Dark ? Colors.Black : Colors.White;
-            _previousSelectedLabel?.Handler?.UpdateValue("Background");
-        }
-
-        Label selectedLabel = (Label)sender;
-        _previousSelectedLabel = selectedLabel;
-
-        selectedLabel.BackgroundColor = Color.Parse("CadetBlue");
-        selectedLabel?.Handler?.UpdateValue("Background");
-
-        _selectedCategory = args.Parameter?.ToString();
-
-        if (_selectedCategory != null)
-        {
-            ((CostModel)BindingContext).CategoryId = int.Parse(_selectedCategory);
-        }
-
-        // var id = selectedLabel.Id;
-        // var text = selectedLabel.Text;
-    }
+    private record CategoryItem(int Id, string Name, string Emoji);
 }

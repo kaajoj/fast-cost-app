@@ -9,28 +9,7 @@
         <models:CostModel />
     </ContentPage.BindingContext>
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style TargetType="Label">
-                <Setter Property="HorizontalOptions" Value="Center" />
-
-                <!-- <Setter Property="GestureRecognizers"> -->
-                <!--     <Setter.Value> -->
-                <!--         <TapGestureRecognizer Command="{Binding CategoryId}" CommandParameter="{Binding Source={x:Reference this}, Path=Name}" /> -->
-                <!--     </Setter.Value> -->
-                <!-- </Setter> -->
-            </Style>
-
-            <!-- <TapGestureRecognizer Tapped="OnCategorySelected"> -->
-            <!--     ~1~ TapGestureRecognizer.CommandParameter="food" @1@ -->
-            <!-- </TapGestureRecognizer> -->
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
     <VerticalStackLayout Spacing="5" Margin="5">
-        <!-- <VerticalStackLayout.GestureRecognizers> -->
-        <!--     <TapGestureRecognizer Tapped="OnCategorySelected"/> -->
-        <!-- </VerticalStackLayout.GestureRecognizers> -->
 
         <Entry x:Name="CostValueEditor"
                Placeholder="enter cost value"
@@ -72,135 +51,37 @@
 
         <Label Text="Select category:" FontSize="25" Padding="1" Margin="0" />
 
-        <Grid x:Name="categoriesGrid"  RowSpacing="5" ColumnSpacing="10" Padding="0" Margin="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <CollectionView x:Name="categoriesCollection"
+                        SelectionMode="Single"
+                        SelectionChanged="OnCategorySelected">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="4" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="4">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="Transparent" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="CadetBlue" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="0">
+                            <Label Text="{Binding Emoji}" FontSize="50" HorizontalOptions="Center" />
+                            <Label Text="{Binding Name}"  FontSize="14" FontAttributes="Bold" HorizontalOptions="Center" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-            <!-- <Grid.GestureRecognizers> -->
-            <!--     <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter=""/> -->
-            <!-- </Grid.GestureRecognizers> -->
-
-            <Label x:Name="LblCatC0R0" Text="🍕" FontSize="60" Grid.Column="0" Grid.Row="0">
-                <Label.GestureRecognizers>
-                    <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="food"/> -->
-                    <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="1"/>
-                </Label.GestureRecognizers>
-            </Label> 
-            <Label x:Name="LblCatC1R0" Text="🏠" FontSize="60" Grid.Column="1" Grid.Row="0">
-                <Label.GestureRecognizers>
-                    <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="apartment"/> -->
-                    <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="2"/>
-                </Label.GestureRecognizers>
-            </Label>
-            <Label x:Name="LblCatC2R0" Text="🛒" FontSize="60" Grid.Column="2" Grid.Row="0">
-                <Label.GestureRecognizers>
-                    <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="shopping"/> -->
-                    <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="3"/>
-                </Label.GestureRecognizers>
-            </Label>
-            <Label x:Name="LblCatC3R0" Text="🚗" FontSize="60" Grid.Column="3" Grid.Row="0">
-                <Label.GestureRecognizers>
-                    <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="transport"/> -->
-                    <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="4"/>
-                </Label.GestureRecognizers>
-            </Label>
-
-                <Label x:Name="LblTextCatC0R1" Text="food" FontAttributes="Bold" Grid.Column="0" Grid.Row="1">
-                    <Label.GestureRecognizers>
-                        <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="food"/> -->
-                        <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="1"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label x:Name="LblTextCatC1R1" Text="apartment" FontAttributes="Bold" Grid.Column="1" Grid.Row="1">
-                    <Label.GestureRecognizers>
-                        <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="apartment"/> -->
-                        <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="2"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label x:Name="LblTextCatC2R1" Text="shopping" FontAttributes="Bold" Grid.Column="2" Grid.Row="1">
-                    <Label.GestureRecognizers>
-                        <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="shopping"/> -->
-                        <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="3"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label x:Name="LblTextCatC3R1" Text="transport" FontAttributes="Bold" Grid.Column="3" Grid.Row="1">
-                    <Label.GestureRecognizers>
-                        <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="transport"/> -->
-                        <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="4"/>
-                    </Label.GestureRecognizers>
-                </Label>
-
-            <Label x:Name="LblCatC0R2" Text="🏖" FontSize="60" Grid.Column="0" Grid.Row="2">
-                <Label.GestureRecognizers>
-                    <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="trip"/> -->
-                    <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="5"/>
-                </Label.GestureRecognizers>
-            </Label>
-            <Label x:Name="LblCatC1R2" Text="🏦" FontSize="60" Grid.Column="1" Grid.Row="2">
-                <Label.GestureRecognizers>
-                    <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="bank"/> -->
-                    <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="6"/>
-                </Label.GestureRecognizers>
-            </Label>
-            <Label x:Name="LblCatC2R2" Text="💼" FontSize="60" Grid.Column="2" Grid.Row="2">
-                <Label.GestureRecognizers>
-                    <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="company"/> -->
-                    <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="7"/>
-                </Label.GestureRecognizers>
-            </Label>
-            <Label x:Name="LblCatC3R2" Text="💸" FontSize="60" Grid.Column="3" Grid.Row="2">
-                <Label.GestureRecognizers>
-                    <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="other"/> -->
-                    <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="8"/>
-                </Label.GestureRecognizers>
-            </Label>
-
-                <Label x:Name="LblTextCatC0R3" Text="trip" FontAttributes="Bold" Grid.Column="0" Grid.Row="3">
-                    <Label.GestureRecognizers>
-                        <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="trip"/> -->
-                        <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="5"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label x:Name="LblTextCatC1R3" Text="bank" FontAttributes="Bold" Grid.Column="1" Grid.Row="3">
-                    <Label.GestureRecognizers>
-                        <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="bank"/> -->
-                        <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="6"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label x:Name="LblTextCatC2R3" Text="company" FontAttributes="Bold" Grid.Column="2" Grid.Row="3">
-                    <Label.GestureRecognizers>
-                        <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="company"/> -->
-                        <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="7"/>
-                    </Label.GestureRecognizers>
-                </Label>
-                <Label x:Name="LblTextCatC3R3" Text="other" FontAttributes="Bold" Grid.Column="3" Grid.Row="3">
-                    <Label.GestureRecognizers>
-                        <!-- <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="other"/> -->
-                        <TapGestureRecognizer Tapped="OnCategorySelected" CommandParameter="8"/>
-                    </Label.GestureRecognizers>
-                </Label>
-
-            <!-- <Label x:Name="LblCatC0R4" Text="🌅" FontSize="64" Grid.Column="0" Grid.Row="4" /> -->
-            <!-- <Label x:Name="LblCatC1R4" Text="☀️" FontSize="64" Grid.Column="1" Grid.Row="4" /> -->
-            <!-- <Label x:Name="LblCatC2R4" Text="🌇" FontSize="64" Grid.Column="2" Grid.Row="4" /> -->
-            <!-- <Label x:Name="LblCatC3R4" Text="💳" FontSize="64" Grid.Column="3" Grid.Row="4" /> -->
-            <!-- -->
-            <!-- <Label x:Name="LblTextCatC0R5" Text="CatC0R5" FontAttributes="Bold" Grid.Column="0" Grid.Row="5" /> -->
-            <!-- <Label x:Name="LblTextCatC1R5" Text="CatC1R5" FontAttributes="Bold" Grid.Column="1" Grid.Row="5" /> -->
-            <!-- <Label x:Name="LblTextCatC2R5" Text="CatC2R5" FontAttributes="Bold" Grid.Column="2" Grid.Row="5" /> -->
-            <!-- <Label x:Name="LblTextCatC3R5" Text="CatC3R5" FontAttributes="Bold" Grid.Column="3" Grid.Row="5" /> -->
-        </Grid>
     </VerticalStackLayout>
 </ContentPage>
