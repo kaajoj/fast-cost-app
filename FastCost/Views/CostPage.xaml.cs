@@ -123,7 +123,8 @@ public partial class CostPage : ContentPage
                 await _costRepository.SaveCostAsync(cost);
             }
 
-            await Shell.Current.GoToAsync($"//allCosts", true);
+            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("//allCosts");
         }
         catch (ArgumentNullException)
         {
