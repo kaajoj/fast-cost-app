@@ -14,6 +14,9 @@ public partial class AnalysisPage : ContentPage
         this.BindingContext = new AllCostsGroup();
     }
 
+    private async void OnSwipedRight(object sender, SwipedEventArgs e)
+        => await Shell.Current.GoToAsync("//allCosts");
+
     protected override async void OnNavigatedTo(NavigatedToEventArgs state)
     {
         base.OnNavigatedTo(state);

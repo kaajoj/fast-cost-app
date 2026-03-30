@@ -6,6 +6,10 @@
              x:Class="FastCost.Views.AnalysisPage"
              Title="Analysis">
 
+    <ContentPage.GestureRecognizers>
+        <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
+    </ContentPage.GestureRecognizers>
+
     <ContentPage.Resources>
         <DataTemplate x:Key="GroupHeaderTemplate">
             <Label Text="{Binding Key.Name}"  FontSize="16" FontAttributes="Bold" />

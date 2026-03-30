@@ -5,6 +5,11 @@
              x:Class="FastCost.Views.AllCostsPage"
              Title="All Costs">
 
+    <ContentPage.GestureRecognizers>
+        <SwipeGestureRecognizer Direction="Left"  Swiped="OnSwipedLeft"/>
+        <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
+    </ContentPage.GestureRecognizers>
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="" Clicked="Add_Clicked" IconImageSource="{FontImageSource Glyph='+', Size=32, FontFamily=OpenSansRegular, Color={StaticResource White}}" />
     </ContentPage.ToolbarItems>
