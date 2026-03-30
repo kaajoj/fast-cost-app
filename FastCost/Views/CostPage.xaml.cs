@@ -13,6 +13,9 @@ public partial class CostPage : ContentPage
     private readonly ICostRepository _costRepository;
     private readonly ICategoryRepository _categoryRepository;
     private Task? _loadCostTask;
+    private Task? _preloadTask;
+
+    private static List<CategoryItem>? _cachedCategories;
 
     private static readonly Dictionary<string, string> _emojiMap = new()
     {
@@ -32,6 +35,16 @@ public partial class CostPage : ContentPage
         BindingContext = new CostModel();
         _costRepository = costRepository;
         _categoryRepository = categoryRepository;
+        _preloadTask = PreloadCategoriesAsync();
+    }
+
+    private async Task PreloadCategoriesAsync()
+    {
+        if (_cachedCategories != null) return;
+        var categories = await _categoryRepository.GetCategories();
+        _cachedCategories = categories
+            .Select(c => new CategoryItem(c.Id, c.Name, _emojiMap.GetValueOrDefault(c.Name, "❓")))
+            .ToList();
     }
 
     public string ItemId
@@ -76,19 +89,15 @@ public partial class CostPage : ContentPage
 
     private async Task InitializePageAsync()
     {
-        if (_loadCostTask != null)
-            await _loadCostTask;
+        await Task.WhenAll(
+            _loadCostTask ?? Task.CompletedTask,
+            _preloadTask ?? Task.CompletedTask);
 
-        var categories = await _categoryRepository.GetCategories();
-        var items = categories
-            .Select(c => new CategoryItem(c.Id, c.Name, _emojiMap.GetValueOrDefault(c.Name, "❓")))
-            .ToList();
-
-        categoriesCollection.ItemsSource = items;
+        categoriesCollection.ItemsSource = _cachedCategories;
 
         if (BindingContext is CostModel costModel && costModel.CategoryId != null)
         {
-            categoriesCollection.SelectedItem = items.FirstOrDefault(c => c.Id == costModel.CategoryId);
+            categoriesCollection.SelectedItem = _cachedCategories?.FirstOrDefault(c => c.Id == costModel.CategoryId);
         }
     }
 
