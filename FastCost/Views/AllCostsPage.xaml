@@ -5,16 +5,17 @@
              x:Class="FastCost.Views.AllCostsPage"
              Title="All Costs">
 
-    <ContentPage.GestureRecognizers>
-        <SwipeGestureRecognizer Direction="Left"  Swiped="OnSwipedLeft"/>
-        <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
-    </ContentPage.GestureRecognizers>
-
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="" Clicked="Add_Clicked" IconImageSource="{FontImageSource Glyph='+', Size=32, FontFamily=OpenSansRegular, Color={StaticResource White}}" />
     </ContentPage.ToolbarItems>
 
-        <VerticalStackLayout Spacing="0" Margin="5">    
+        <Grid>
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Left"  Swiped="OnSwipedLeft"/>
+                <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
+            </Grid.GestureRecognizers>
+
+        <VerticalStackLayout Spacing="0" Margin="5">
 
         <DatePicker x:Name="allCostsDatePicker" 
                     Date="{Binding SelectedDate}"
@@ -79,4 +80,5 @@
         </CollectionView>
 
         </VerticalStackLayout>
+        </Grid>
 </ContentPage>

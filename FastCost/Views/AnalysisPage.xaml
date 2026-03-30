@@ -6,10 +6,6 @@
              x:Class="FastCost.Views.AnalysisPage"
              Title="Analysis">
 
-    <ContentPage.GestureRecognizers>
-        <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
-    </ContentPage.GestureRecognizers>
-
     <ContentPage.Resources>
         <DataTemplate x:Key="GroupHeaderTemplate">
             <Label Text="{Binding Key.Name}"  FontSize="16" FontAttributes="Bold" />
@@ -20,6 +16,11 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
+        <Grid>
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
+            </Grid.GestureRecognizers>
+
             <VerticalStackLayout Spacing="10" Margin="20">
 
                 <DatePicker x:Name="AnalysisPageDatePicker"
@@ -53,5 +54,6 @@
 
                 </CollectionView>
             </VerticalStackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

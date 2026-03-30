@@ -4,9 +4,10 @@
              x:Class="FastCost.Views.MainPage"
              Title="Add cost">
 
-        <ContentPage.GestureRecognizers>
-            <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipedLeft"/>
-        </ContentPage.GestureRecognizers>
+        <Grid>
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipedLeft"/>
+            </Grid.GestureRecognizers>
 
         <VerticalStackLayout
             Spacing="20"
@@ -58,4 +59,5 @@
             </StackLayout>
 
         </VerticalStackLayout>
+        </Grid>
 </ContentPage>
