@@ -15,6 +15,8 @@ public partial class MainPage : ContentPage
     
     protected override async void OnAppearing()
     {
+        await App.DbInitTask;
+
         var currentDate = DateTime.UtcNow.Date;
         var costs = await _costRepository.GetCostsByMonth(currentDate);
 
