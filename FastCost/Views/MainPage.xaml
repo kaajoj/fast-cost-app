@@ -54,7 +54,6 @@
                     WidthRequest="80" 
                     HeightRequest="80" 
                     Clicked="OnCostEntered"
-                    Pressed="OnCostEntered"
                     HorizontalOptions="Center"/>
             </StackLayout>
 
