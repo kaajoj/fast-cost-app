@@ -29,7 +29,7 @@ public partial class AllCostsPage : ContentPage
 
             var costs = await _allCostsService.LoadCostsByMonth(currentDate);
             allCosts.Costs = new ObservableCollection<CostModel>(costs.Adapt<List<CostModel>>().OrderBy(c => c.Date));
-            allCosts.Sum = await _allCostsService.GetSum(currentDate);
+            allCosts.Sum = allCosts.Costs.Sum(c => c.Value ?? 0);
             costsCollection.SelectionMode = SelectionMode.Single;
             _isNavigating = false;
         }
@@ -79,8 +79,7 @@ public partial class AllCostsPage : ContentPage
             {
                 var costs = await _allCostsService.LoadCostsByMonth(selectedDate);
                 allCosts.Costs = new ObservableCollection<CostModel>(costs.Adapt<List<CostModel>>().OrderBy(c => c.Date));
-
-                allCosts.Sum = (decimal)await _allCostsService.GetSum(selectedDate);
+                allCosts.Sum = allCosts.Costs.Sum(c => c.Value ?? 0);
             }
         }
     }
