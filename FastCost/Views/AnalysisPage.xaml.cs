@@ -45,6 +45,7 @@ public partial class AnalysisPage : ContentPage
 
             allCostsGroup.GroupCosts.Clear();
             var groupCosts = await _allCostsService.GetCostsByMonthGroupByCategory(date);
+            decimal totalSum = decimal.Zero;
             foreach (var costGroup in groupCosts)
             {
                 decimal sumGroup = decimal.Zero;
@@ -52,12 +53,12 @@ public partial class AnalysisPage : ContentPage
                 {
                     sumGroup += cost.Value.GetValueOrDefault();
                 }
-                costGroup.Key.SumValue = (decimal?)sumGroup;
-
+                costGroup.Key.SumValue = sumGroup;
+                totalSum += sumGroup;
                 allCostsGroup.GroupCosts.Add(costGroup);
             }
 
-            allCostsGroup.Sum = await _allCostsService.GetSum(date);
+            allCostsGroup.Sum = totalSum;
         }
     }
 }
