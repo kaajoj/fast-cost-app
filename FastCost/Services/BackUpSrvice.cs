@@ -14,7 +14,6 @@ namespace FastCost.Services
 
         public async Task ExportData()
         {
-            var allCosts = new AllCosts();
             var costs = await _allCostsService.LoadCostsBackUp();
 
             var filePath = Path.Combine(FileSystem.AppDataDirectory, "costsBackUp.csv");
