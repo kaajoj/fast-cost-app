@@ -59,17 +59,17 @@ public partial class AllCostsPage : ContentPage
         _isNavigating = true;
         try
         {
-        var cost = (CostModel)e.CurrentSelection[0];
-        costsCollection.SelectionMode = SelectionMode.None;
-        await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.ItemId)}={cost.Id}");
-    }
+            var cost = (CostModel)e.CurrentSelection[0];
+            costsCollection.SelectionMode = SelectionMode.None;
+            await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.ItemId)}={cost.Id}");
+        }
         finally
         {
             _isNavigating = false;
         }
     }
 
-    private async Task MyDatePicker_DateSelected(object sender, DateChangedEventArgs e)
+    private async void MyDatePicker_DateSelected(object sender, DateChangedEventArgs e)
     {
         if (e.NewDate != null)
         {

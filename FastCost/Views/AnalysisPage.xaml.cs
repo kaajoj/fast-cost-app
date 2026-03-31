@@ -29,7 +29,7 @@ public partial class AnalysisPage : ContentPage
         }
     }
 
-    private async Task DatePicker_DateSelected(object sender, DateChangedEventArgs e)
+    private async void DatePicker_DateSelected(object sender, DateChangedEventArgs e)
     {
         if(e.NewDate != null)
         {

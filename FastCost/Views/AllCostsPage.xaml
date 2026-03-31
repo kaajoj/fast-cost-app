@@ -62,7 +62,7 @@
 
             <!-- Define the appearance of each item in the list -->
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="models:CostModel">
                     <StackLayout>
                         <HorizontalStackLayout Spacing="35">
                             <Label Text="{Binding FormattedDate}" FontSize="16" HorizontalTextAlignment="End"/>
