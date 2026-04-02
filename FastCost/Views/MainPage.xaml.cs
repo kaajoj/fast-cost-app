@@ -6,6 +6,7 @@ namespace FastCost.Views;
 public partial class MainPage : ContentPage
 {
     private readonly ICostRepository _costRepository;
+    private bool _isNavigating = false;
 
     public MainPage(ICostRepository costRepository)
 	{
@@ -71,32 +72,37 @@ public partial class MainPage : ContentPage
 
     private async void OnCostEntered(object sender, EventArgs e)
 	{
-        SemanticScreenReader.Announce(CostText.Text);
+        if (_isNavigating) return;
+        _isNavigating = true;
 
+        try
         {
-            try
-            {
-                var indexOfDot = CostText.Text.IndexOf('.');
-                var indexOfComma = CostText.Text.IndexOf(',');
-                var numberFormat = new NumberFormatInfo
-                {
-                    NumberDecimalSeparator = indexOfComma > indexOfDot ? "," : ".",
-                    NumberGroupSeparator = indexOfComma > indexOfDot ? "." : ","
-                };
+            SemanticScreenReader.Announce(CostText.Text);
 
-                decimal.TryParse(CostText.Text, NumberStyles.Number, numberFormat, out var enteredCost);
-                CostText.Text = string.Empty;
-                await CostText.HideSoftInputAsync(CancellationToken.None);
-                await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.CostValue)}={enteredCost}", true);
-            }
-            catch (ArgumentNullException)
+            var indexOfDot = CostText.Text.IndexOf('.');
+            var indexOfComma = CostText.Text.IndexOf(',');
+            var numberFormat = new NumberFormatInfo
             {
-                await DisplayAlertAsync("Unable to add cost", "Cost value was not valid.", "OK");
-            }
-            catch (Exception)
-            {
-                await DisplayAlertAsync("Unable to add cost", "Cost adding failed.", "OK");
-            }
+                NumberDecimalSeparator = indexOfComma > indexOfDot ? "," : ".",
+                NumberGroupSeparator = indexOfComma > indexOfDot ? "." : ","
+            };
+
+            decimal.TryParse(CostText.Text, NumberStyles.Number, numberFormat, out var enteredCost);
+            CostText.Text = string.Empty;
+            await CostText.HideSoftInputAsync(CancellationToken.None);
+            await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.CostValue)}={enteredCost}", true);
+        }
+        catch (ArgumentNullException)
+        {
+            await DisplayAlertAsync("Unable to add cost", "Cost value was not valid.", "OK");
+        }
+        catch (Exception)
+        {
+            await DisplayAlertAsync("Unable to add cost", "Cost adding failed.", "OK");
+        }
+        finally
+        {
+            _isNavigating = false;
         }
     }
 }
