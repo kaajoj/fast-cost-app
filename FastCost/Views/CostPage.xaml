@@ -17,7 +17,9 @@
                FontSize="23"
                FontAttributes="Bold"
                HorizontalTextAlignment="Center"
-               Keyboard="Numeric" />
+               Keyboard="Numeric"
+               ReturnType="Next"
+               Completed="OnCostValueCompleted" />
 
         <Entry x:Name="DescriptionEditor"
                Placeholder="enter description"
@@ -25,7 +27,8 @@
                FontSize="23"
                FontAttributes="Bold"
                HorizontalTextAlignment="Center"
-               Margin="0,-8,0,0" />
+               Margin="0,-8,0,0"
+               ReturnType="Done" />
 
         <DatePicker x:Name="costDatePicker"
                     Date="{Binding Date}"

@@ -101,6 +101,11 @@ public partial class CostPage : ContentPage
         }
     }
 
+    private void OnCostValueCompleted(object sender, EventArgs e)
+    {
+        DescriptionEditor.Focus();
+    }
+
     private void OnCategorySelected(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection.FirstOrDefault() is CategoryItem selected)
