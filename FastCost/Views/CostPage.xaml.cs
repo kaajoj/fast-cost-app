@@ -99,6 +99,8 @@ public partial class CostPage : ContentPage
         {
             categoriesCollection.SelectedItem = _cachedCategories?.FirstOrDefault(c => c.Id == costModel.CategoryId);
         }
+
+        CostValueEditor.Focus();
     }
 
     private void OnCostValueCompleted(object sender, EventArgs e)
@@ -108,7 +110,8 @@ public partial class CostPage : ContentPage
 
     private void OnDescriptionCompleted(object sender, EventArgs e)
     {
-        DescriptionEditor.Unfocus();
+        // Keep focus trapped on DescriptionEditor to prevent Enter key
+        // from propagating to Shell navigation elements (back button)
     }
 
     private void OnCategorySelected(object sender, SelectionChangedEventArgs e)
