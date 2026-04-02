@@ -106,6 +106,11 @@ public partial class CostPage : ContentPage
         DescriptionEditor.Focus();
     }
 
+    private void OnDescriptionCompleted(object sender, EventArgs e)
+    {
+        DescriptionEditor.Unfocus();
+    }
+
     private void OnCategorySelected(object sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection.FirstOrDefault() is CategoryItem selected)
@@ -116,6 +121,9 @@ public partial class CostPage : ContentPage
 
     private async void SaveButton_Clicked(object sender, EventArgs e)
     {
+        if (CostValueEditor.IsFocused || DescriptionEditor.IsFocused)
+            return;
+
         try
         {
             var indexOfDot = CostValueEditor.Text.IndexOf('.');
