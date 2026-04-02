@@ -20,19 +20,17 @@ public partial class AllCostsPage : ContentPage
     protected override async void OnNavigatedTo(NavigatedToEventArgs state)
     {
         base.OnNavigatedTo(state);
-        
-        DateTime currentDate = DateTime.Now;
+        _isNavigating = true;
 
         if (BindingContext is AllCosts allCosts)
         {
-            currentDate = allCosts.SelectedDate;
-
-            var costs = await _allCostsService.LoadCostsByMonth(currentDate);
+            var costs = await _allCostsService.LoadCostsByMonth(allCosts.SelectedDate);
             allCosts.Costs = new ObservableCollection<CostModel>(costs.Adapt<List<CostModel>>().OrderBy(c => c.Date));
             allCosts.Sum = allCosts.Costs.Sum(c => c.Value ?? 0);
             costsCollection.SelectionMode = SelectionMode.Single;
-            _isNavigating = false;
         }
+
+        _isNavigating = false;
     }
 
     private async void OnSwipedLeft(object sender, SwipedEventArgs e)
