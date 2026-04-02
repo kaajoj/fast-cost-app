@@ -124,9 +124,6 @@ public partial class CostPage : ContentPage
 
     private async void SaveButton_Clicked(object sender, EventArgs e)
     {
-        if (CostValueEditor.IsFocused || DescriptionEditor.IsFocused)
-            return;
-
         try
         {
             var indexOfDot = CostValueEditor.Text.IndexOf('.');
