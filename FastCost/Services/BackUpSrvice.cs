@@ -22,7 +22,8 @@ namespace FastCost.Services
             lines.Add("Id,Value,Description,Date,CategoryId");
             foreach (var cost in costs)
             {
-                lines.Add($"{cost.Id},{cost.Value},{cost.Description},{cost.Date},{cost.CategoryId}");
+                var description = cost.Description?.Replace("\"", "\"\"");
+                lines.Add($"{cost.Id},{cost.Value},\"{description}\",{cost.Date},{cost.CategoryId}");
             }
 
             await File.WriteAllLinesAsync(filePath, lines);
