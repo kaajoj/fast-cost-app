@@ -90,7 +90,7 @@ public partial class MainPage : ContentPage
             decimal.TryParse(CostText.Text, NumberStyles.Number, numberFormat, out var enteredCost);
             CostText.Text = string.Empty;
             await CostText.HideSoftInputAsync(CancellationToken.None);
-            await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.CostValue)}={enteredCost}", true);
+            await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.CostValue)}={enteredCost.ToString(CultureInfo.InvariantCulture)}", true);
         }
         catch (ArgumentNullException)
         {
