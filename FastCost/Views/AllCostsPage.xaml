@@ -15,9 +15,10 @@
                 <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
             </Grid.GestureRecognizers>
 
-        <VerticalStackLayout Spacing="0" Margin="5">
+        <Grid RowDefinitions="Auto,*" Margin="5">
 
-        <DatePicker x:Name="allCostsDatePicker" 
+        <DatePicker x:Name="allCostsDatePicker"
+                    Grid.Row="0"
                     Date="{Binding SelectedDate}"
                     Format="MM/yyyy"
                     FontSize="20"
@@ -26,6 +27,7 @@
 
             <!-- Display costs in a list -->
         <CollectionView x:Name="costsCollection"
+                        Grid.Row="1"
                         ItemsSource="{Binding Costs}"
                         Header="Date            Value         Category                  Description"
                         Margin="20"
@@ -79,6 +81,6 @@
             </CollectionView.Footer>
         </CollectionView>
 
-        </VerticalStackLayout>
+        </Grid>
         </Grid>
 </ContentPage>

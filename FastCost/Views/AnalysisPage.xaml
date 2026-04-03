@@ -21,9 +21,10 @@
                 <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
             </Grid.GestureRecognizers>
 
-            <VerticalStackLayout Spacing="10" Margin="20">
+            <Grid RowDefinitions="Auto,*" Margin="20" RowSpacing="10">
 
                 <DatePicker x:Name="AnalysisPageDatePicker"
+                        Grid.Row="0"
                         Date="{Binding SelectedDate}"
                         Format="MM/yyyy"
                         FontSize="20"
@@ -31,6 +32,7 @@
                         DateSelected="DatePicker_DateSelected"/>
 
                 <CollectionView x:Name="CollectionViewGroup"
+                            Grid.Row="1"
                             ItemsSource="{Binding GroupCosts}"
                             IsGrouped="True"
                             GroupHeaderTemplate="{DynamicResource GroupHeaderTemplate}"
@@ -53,7 +55,7 @@
                     </CollectionView.Footer>
 
                 </CollectionView>
-            </VerticalStackLayout>
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

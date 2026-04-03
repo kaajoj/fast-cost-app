@@ -34,18 +34,12 @@ namespace FastCost.Core.DAL
         }
 
         public async Task<int> SaveCostAsync(Cost cost)
-        {   
+        {
             if (cost.Id != 0)
             {
-                var existingCost = await _dbContext.Costs.FirstOrDefaultAsync(c => c.Id == cost.Id);
-                if (existingCost != null)
-                {
-                    existingCost.Value = cost.Value;
-                    existingCost.Description = cost.Description;
-                    existingCost.Date = cost.Date;
-                    existingCost.CategoryId = cost.CategoryId;
-                    _dbContext.Costs.Update(existingCost);
-                }
+                var existing = await _dbContext.Costs.FindAsync(cost.Id);
+                if (existing != null)
+                    _dbContext.Entry(existing).CurrentValues.SetValues(cost);
             }
             else
             {
@@ -57,11 +51,9 @@ namespace FastCost.Core.DAL
 
         public async Task<int> DeleteCostAsync(Cost cost)
         {
-            var existingCost = await _dbContext.Costs.FirstOrDefaultAsync(c => c.Id == cost.Id);
-            if (existingCost != null)
-            {
-                _dbContext.Costs.Remove(existingCost);
-            }
+            var existing = await _dbContext.Costs.FindAsync(cost.Id);
+            if (existing != null)
+                _dbContext.Costs.Remove(existing);
 
             return await _dbContext.SaveChangesAsync();
         }
