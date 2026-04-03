@@ -75,7 +75,7 @@ public partial class CostPage : ContentPage
                 if (BindingContext is CostModel costModel)
                 {
                     costModel.Value = decimal.Parse(costValue, CultureInfo.InvariantCulture);
-                    costModel.Date = DateTime.UtcNow;
+                    costModel.Date = DateTime.Now;
                 }
             }
         }
