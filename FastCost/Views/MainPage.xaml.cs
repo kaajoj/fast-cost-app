@@ -1,4 +1,5 @@
-﻿using FastCost.Core.DAL;
+﻿using FastCost.Core;
+using FastCost.Core.DAL;
 using System.Globalization;
 
 namespace FastCost.Views;
@@ -33,16 +34,8 @@ public partial class MainPage : ContentPage
         {
             if (!string.IsNullOrEmpty(e.NewTextValue))
             {
-                var indexOfDot = e.NewTextValue.IndexOf('.');
-                var indexOfComma = e.NewTextValue.IndexOf(',');
-                var numberFormat = new NumberFormatInfo
-                {
-                    NumberDecimalSeparator = indexOfComma > indexOfDot ? "," : ".",
-                    NumberGroupSeparator = indexOfComma > indexOfDot ? "." : ","
-                };
+                var enteredCost = CostParser.Parse(e.NewTextValue);
 
-                decimal.TryParse(e.NewTextValue, NumberStyles.Number, numberFormat, out var enteredCost);
-                
                 if (enteredCost != 0)
                 {
                     CostBtn.IsEnabled = true;
@@ -79,15 +72,7 @@ public partial class MainPage : ContentPage
         {
             SemanticScreenReader.Announce(CostText.Text);
 
-            var indexOfDot = CostText.Text.IndexOf('.');
-            var indexOfComma = CostText.Text.IndexOf(',');
-            var numberFormat = new NumberFormatInfo
-            {
-                NumberDecimalSeparator = indexOfComma > indexOfDot ? "," : ".",
-                NumberGroupSeparator = indexOfComma > indexOfDot ? "." : ","
-            };
-
-            decimal.TryParse(CostText.Text, NumberStyles.Number, numberFormat, out var enteredCost);
+            var enteredCost = CostParser.Parse(CostText.Text);
             CostText.Text = string.Empty;
             await CostText.HideSoftInputAsync(CancellationToken.None);
             await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.CostValue)}={enteredCost.ToString(CultureInfo.InvariantCulture)}", true);

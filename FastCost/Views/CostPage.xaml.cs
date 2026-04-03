@@ -1,3 +1,4 @@
+using FastCost.Core;
 using FastCost.Core.DAL;
 using FastCost.Core.DAL.Entities;
 using FastCost.Core.Models;
@@ -126,15 +127,7 @@ public partial class CostPage : ContentPage
     {
         try
         {
-            var indexOfDot = CostValueEditor.Text.IndexOf('.');
-            var indexOfComma = CostValueEditor.Text.IndexOf(',');
-            var numberFormat = new NumberFormatInfo
-            {
-                NumberDecimalSeparator = indexOfComma > indexOfDot ? "," : ".",
-                NumberGroupSeparator = indexOfComma > indexOfDot ? "." : ","
-            };
-
-            decimal.TryParse(CostValueEditor.Text?.Trim(), NumberStyles.Number, numberFormat, out var enteredCost);
+            var enteredCost = CostParser.Parse(CostValueEditor.Text);
 
             if (BindingContext is CostModel costModel)
             {
