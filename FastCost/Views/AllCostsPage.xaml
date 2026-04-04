@@ -36,24 +36,25 @@
 
             <CollectionView.HeaderTemplate>
                 <DataTemplate>
-                    <StackLayout Orientation="Horizontal" Spacing="20">
-                        <Label Margin="0,0,0,0"
-                               Text="Date"
-                               FontSize="16"
-                               FontAttributes="Bold" />                    
-                        <Label Margin="10,0,0,0"
-                               Text="Value"
-                               FontSize="16"
-                               FontAttributes="Bold" />                    
-                        <Label Margin="10,0,0,0"
-                               Text="Category"
-                               FontSize="16"
-                               FontAttributes="Bold" />                    
-                        <Label Margin="10,0,0,0"
-                               Text="Description"
+                    <HorizontalStackLayout Spacing="35">
+                        <Label Text="Date"
                                FontSize="16"
                                FontAttributes="Bold" />
-                    </StackLayout>
+                        <Label Text="Value"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               WidthRequest="60"
+                               HorizontalTextAlignment="End" />
+                        <Label Text="Category"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               MinimumWidthRequest="70"
+                               HorizontalTextAlignment="End" />
+                        <Label Text="Description"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               MinimumWidthRequest="100" />
+                    </HorizontalStackLayout>
                 </DataTemplate>
             </CollectionView.HeaderTemplate>
 
@@ -68,7 +69,7 @@
                     <StackLayout>
                         <HorizontalStackLayout Spacing="35">
                             <Label Text="{Binding FormattedDate}" FontSize="16" HorizontalTextAlignment="End"/>
-                            <Label Text="{Binding Value}" FontSize="16" MinimumWidthRequest="25" HorizontalTextAlignment="End"/>
+                            <Label Text="{Binding Value}" FontSize="16" WidthRequest="60" HorizontalTextAlignment="End"/>
                             <Label Text="{Binding Category.Name}" FontSize="16" MinimumWidthRequest="70" HorizontalTextAlignment="End"/>
                             <Label Text="{Binding Description}" FontSize="16" MinimumWidthRequest="0" HorizontalTextAlignment="End"/>
                         </HorizontalStackLayout>
