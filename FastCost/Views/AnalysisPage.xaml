@@ -8,10 +8,10 @@
 
     <ContentPage.Resources>
         <DataTemplate x:Key="GroupHeaderTemplate">
-            <Label Text="{Binding Key.Name}"  FontSize="16" FontAttributes="Bold" />
+            <Label Text="{Binding Key.Name}"  FontSize="16" FontAttributes="Bold" WidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="Start" />
         </DataTemplate>
         <DataTemplate x:Key="GroupFooterTemplate">
-            <Label Text="{Binding Key.SumValue, StringFormat='{0:F2}'}"  FontSize="16" FontAttributes="Bold" TextColor="CadetBlue" Margin="1,0,0,15"/>
+            <Label Text="{Binding Key.SumValue, StringFormat='{0:F2}'}"  FontSize="16" FontAttributes="Bold" TextColor="CadetBlue" Margin="1,0,0,15" WidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="Start" />
         </DataTemplate>
     </ContentPage.Resources>
 
@@ -41,10 +41,10 @@
                         <DataTemplate>
                             <Grid ColumnSpacing="15">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="100" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Text="{Binding Value, StringFormat='{0:F2}'}" FontSize="16" Margin="1,0,0,0" />
+                                <Label Grid.Column="0" Text="{Binding Value, StringFormat='{0:F2}'}" FontSize="16" Margin="1,0,0,0" HorizontalTextAlignment="End" />
                                 <Label Grid.Column="1" Text="{Binding Description}" FontSize="16" Margin="1,0,0,0" />
                             </Grid>
                         </DataTemplate>
