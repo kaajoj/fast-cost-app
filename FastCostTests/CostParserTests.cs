@@ -40,4 +40,13 @@ public class CostParserTests
     {
         Assert.Equal(10.5m, CostParser.Parse("  10.5  "));
     }
+
+    [Theory]
+    [InlineData("10.555", 10.56)]
+    [InlineData("10.554", 10.55)]
+    [InlineData("10.1234", 10.12)]
+    public void Parse_ShouldRoundToTwoDecimalPlaces(string input, decimal expected)
+    {
+        Assert.Equal(expected, CostParser.Parse(input));
+    }
 }

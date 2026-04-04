@@ -36,7 +36,7 @@
 
             <CollectionView.HeaderTemplate>
                 <DataTemplate>
-                    <HorizontalStackLayout Spacing="35">
+                    <HorizontalStackLayout Spacing="25">
                         <Label Text="Date"
                                FontSize="16"
                                FontAttributes="Bold" />
@@ -67,9 +67,9 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:CostModel">
                     <StackLayout>
-                        <HorizontalStackLayout Spacing="35">
+                        <HorizontalStackLayout Spacing="25">
                             <Label Text="{Binding FormattedDate}" FontSize="16" HorizontalTextAlignment="End"/>
-                            <Label Text="{Binding Value}" FontSize="16" WidthRequest="60" HorizontalTextAlignment="End"/>
+                            <Label Text="{Binding Value, StringFormat='{0:F2}'}" FontSize="16" WidthRequest="60" HorizontalTextAlignment="End"/>
                             <Label Text="{Binding Category.Name}" FontSize="16" MinimumWidthRequest="70" HorizontalTextAlignment="End"/>
                             <Label Text="{Binding Description}" FontSize="16" MinimumWidthRequest="0" HorizontalTextAlignment="End"/>
                         </HorizontalStackLayout>

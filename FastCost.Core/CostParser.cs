@@ -19,6 +19,6 @@ public static class CostParser
         };
 
         decimal.TryParse(trimmed, NumberStyles.Number, numberFormat, out var result);
-        return result;
+        return Math.Round(result, 2);
     }
 }
