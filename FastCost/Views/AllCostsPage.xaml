@@ -71,7 +71,9 @@
                             <Label Text="{Binding FormattedDate}" FontSize="16" HorizontalTextAlignment="End"/>
                             <Label Text="{Binding Value, StringFormat='{0:F2}'}" FontSize="16" WidthRequest="60" HorizontalTextAlignment="End"/>
                             <Label Text="{Binding Category.Name}" FontSize="16" MinimumWidthRequest="70" HorizontalTextAlignment="End"/>
-                            <Label Text="{Binding Description}" FontSize="16" MinimumWidthRequest="0" HorizontalTextAlignment="End"/>
+                            <Label Text="{Binding Description}" FontSize="16" MinimumWidthRequest="0" HorizontalTextAlignment="End"
+                                   LineBreakMode="TailTruncation"
+                                   ToolTipProperties.Text="{Binding Description}"/>
                         </HorizontalStackLayout>
                     </StackLayout>
                 </DataTemplate>
