@@ -6,6 +6,27 @@
              x:Class="FastCost.Views.AnalysisPage"
              Title="Analysis">
 
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*,Auto" Padding="0,0,10,0">
+            <Label Grid.Column="0"
+                   Text="Analysis"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center" />
+            <Button Grid.Column="1"
+                    Text="&#x1F4CA; Chart"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="White"
+                    TextColor="CadetBlue"
+                    CornerRadius="15"
+                    HeightRequest="38"
+                    Padding="14,0"
+                    Clicked="OnChartClicked" />
+        </Grid>
+    </Shell.TitleView>
+
     <ContentPage.Resources>
         <DataTemplate x:Key="GroupHeaderTemplate">
             <Label Text="{Binding Key.Name}"  FontSize="16" FontAttributes="Bold" WidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="Start" />

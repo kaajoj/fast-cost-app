@@ -55,6 +55,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <PackageReference Include="Microsoft.Maui.Controls" />
 	<PackageReference Include="CommunityToolkit.Maui" />
+	<PackageReference Include="LiveChartsCore.SkiaSharpView.Maui" />
     <PackageReference Include="SQLitePCLRaw.bundle_green" />
   </ItemGroup>
   <ItemGroup>

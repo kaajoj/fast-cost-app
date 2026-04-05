@@ -14,6 +14,13 @@ public partial class AnalysisPage : ContentPage
         this.BindingContext = new AllCostsGroup();
     }
 
+    private async void OnChartClicked(object sender, EventArgs e)
+    {
+        var chartPage = Handler?.MauiContext?.Services.GetService<ChartPage>();
+        if (chartPage != null)
+            await Navigation.PushModalAsync(new NavigationPage(chartPage));
+    }
+
     private async void OnSwipedRight(object sender, SwipedEventArgs e)
     {
         if (DeviceInfo.Platform == DevicePlatform.WinUI) return;
