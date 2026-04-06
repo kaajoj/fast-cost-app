@@ -33,14 +33,21 @@ namespace FastCost.Core.Services
 
         public async Task<List<(string Month, decimal Total)>> GetMonthlyTotals(int months)
         {
-            var results = new List<(string Month, decimal Total)>();
             var now = DateTime.Now;
+            var startDate = new DateTime(now.Year, now.Month, 1).AddMonths(-(months - 1));
+            var endDate = new DateTime(now.Year, now.Month, 1).AddMonths(1);
 
+            var costs = await _costRepository.GetCostsByDateRange(startDate, endDate);
+
+            var totalsByMonth = costs
+                .GroupBy(c => new { c.Date.Year, c.Date.Month })
+                .ToDictionary(g => (g.Key.Year, g.Key.Month), g => g.Sum(c => c.Value));
+
+            var results = new List<(string Month, decimal Total)>();
             for (int i = months - 1; i >= 0; i--)
             {
                 var date = now.AddMonths(-i);
-                var costs = await _costRepository.GetCostsByMonth(date);
-                var total = costs.Sum(c => c.Value);
+                totalsByMonth.TryGetValue((date.Year, date.Month), out var total);
                 results.Add((date.ToString("MMM"), total));
             }
 

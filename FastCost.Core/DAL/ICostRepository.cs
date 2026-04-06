@@ -7,6 +7,7 @@ namespace FastCost.Core.DAL
         Task<List<Cost>> GetCostsAsync();
         Task<Cost?> GetCostAsync(int id);
         Task<List<Cost>> GetCostsByMonth(DateTime date);
+        Task<List<Cost>> GetCostsByDateRange(DateTime startDate, DateTime endDate);
         Task<int> SaveCostAsync(Cost cost);
         Task<int> DeleteCostAsync(Cost cost);
     }
