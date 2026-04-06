@@ -10,6 +10,7 @@ public partial class ChartPage : ContentPage
 {
     private const int DefaultMonthsToDisplay = 4;
     private readonly IAllCostsService _allCostsService;
+    private bool _loaded;
 
     public ChartPage(IAllCostsService allCostsService)
     {
@@ -17,9 +18,11 @@ public partial class ChartPage : ContentPage
         _allCostsService = allCostsService;
     }
 
-    protected override void OnNavigatedTo(NavigatedToEventArgs state)
+    protected override void OnAppearing()
     {
-        base.OnNavigatedTo(state);
+        base.OnAppearing();
+        if (_loaded) return;
+        _loaded = true;
         _ = LoadChartAsync();
     }
 
@@ -30,7 +33,7 @@ public partial class ChartPage : ContentPage
         var values = data.Select(d => (double)d.Total).ToArray();
         var labels = data.Select(d => d.Month).ToArray();
 
-        chart.Series = new ISeries[]
+        var series = new ISeries[]
         {
             new ColumnSeries<double>
             {
@@ -49,7 +52,7 @@ public partial class ChartPage : ContentPage
             }
         };
 
-        chart.XAxes = new[]
+        var xAxes = new[]
         {
             new Axis
             {
@@ -60,13 +63,17 @@ public partial class ChartPage : ContentPage
             }
         };
 
-        chart.YAxes = new[]
+        var yAxes = new[]
         {
             new Axis
             {
                 MinLimit = 0
             }
         };
+
+        chart.XAxes = xAxes;
+        chart.YAxes = yAxes;
+        chart.Series = series;
     }
 
     private async void OnClose(object sender, EventArgs e)
