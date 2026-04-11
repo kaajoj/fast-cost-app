@@ -38,12 +38,18 @@ public partial class AnalysisPage : ContentPage
 
     private void OnPreviousMonth(object sender, EventArgs e)
     {
-        AnalysisPageDatePicker.Date = AnalysisPageDatePicker.Date.Value.AddMonths(-1);
+        if (AnalysisPageDatePicker.Date.HasValue)
+        {
+            AnalysisPageDatePicker.Date = AnalysisPageDatePicker.Date.Value.AddMonths(-1);
+        }
     }
 
     private void OnNextMonth(object sender, EventArgs e)
     {
-        AnalysisPageDatePicker.Date = AnalysisPageDatePicker.Date.Value.AddMonths(1);
+        if (AnalysisPageDatePicker.Date.HasValue)
+        {
+            AnalysisPageDatePicker.Date = AnalysisPageDatePicker.Date.Value.AddMonths(1);
+        }
     }
 
     private async void DatePicker_DateSelected(object sender, DateChangedEventArgs e)

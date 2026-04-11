@@ -69,12 +69,18 @@ public partial class AllCostsPage : ContentPage
 
     private void OnPreviousMonth(object sender, EventArgs e)
     {
-        allCostsDatePicker.Date = allCostsDatePicker.Date.Value.AddMonths(-1);
+        if (allCostsDatePicker.Date.HasValue)
+        {
+            allCostsDatePicker.Date = allCostsDatePicker.Date.Value.AddMonths(-1);
+        }
     }
 
     private void OnNextMonth(object sender, EventArgs e)
     {
-        allCostsDatePicker.Date = allCostsDatePicker.Date.Value.AddMonths(1);
+        if (allCostsDatePicker.Date.HasValue)
+        {
+            allCostsDatePicker.Date = allCostsDatePicker.Date.Value.AddMonths(1);
+        }
     }
 
     private async void MyDatePicker_DateSelected(object sender, DateChangedEventArgs e)

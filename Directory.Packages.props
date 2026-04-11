@@ -15,6 +15,7 @@
     </PackageVersion>
     <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.5" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.51" />
+    <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.51" />
     <PackageVersion Include="CommunityToolkit.Maui" Version="14.1.0" />
     <PackageVersion Include="LiveChartsCore.SkiaSharpView.Maui" Version="2.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
