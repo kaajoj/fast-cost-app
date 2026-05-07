@@ -9,13 +9,11 @@
         <ToolbarItem Text="" Clicked="Add_Clicked" IconImageSource="{FontImageSource Glyph='+', Size=32, FontFamily=OpenSansRegular, Color={StaticResource White}}" />
     </ContentPage.ToolbarItems>
 
-        <Grid>
-            <Grid.GestureRecognizers>
-                <SwipeGestureRecognizer Direction="Left"  Swiped="OnSwipedLeft"/>
-                <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
-            </Grid.GestureRecognizers>
-
-        <Grid RowDefinitions="Auto,*" Margin="5">
+    <Grid RowDefinitions="Auto,*" Margin="5">
+        <Grid.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left"  Swiped="OnSwipedLeft"/>
+            <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
+        </Grid.GestureRecognizers>
 
         <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Center" Spacing="2">
             <Button Text="&#x2039;" FontSize="32"
@@ -34,57 +32,73 @@
                     Clicked="OnNextMonth" />
         </HorizontalStackLayout>
 
-            <!-- Display costs in a list -->
+        <!-- Display costs in a list -->
         <CollectionView x:Name="costsCollection"
                         Grid.Row="1"
                         ItemsSource="{Binding Costs}"
                         Header="Date            Value         Category                  Description"
                         Margin="20"
-                        SelectionMode="Single"
-                        SelectionChanged="CostsCollection_SelectionChanged">
+                        SelectionMode="None">
 
             <CollectionView.HeaderTemplate>
                 <DataTemplate>
-                    <HorizontalStackLayout Spacing="25">
-                        <Label Text="Date"
-                               FontSize="16"
-                               FontAttributes="Bold" />
-                        <Label Text="Value"
-                               FontSize="16"
-                               FontAttributes="Bold"
-                               WidthRequest="60"
-                               HorizontalTextAlignment="End" />
-                        <Label Text="Category"
-                               FontSize="16"
-                               FontAttributes="Bold"
-                               MinimumWidthRequest="70"
-                               HorizontalTextAlignment="End" />
-                        <Label Text="Description"
-                               FontSize="16"
-                               FontAttributes="Bold"
-                               MinimumWidthRequest="100" />
-                    </HorizontalStackLayout>
+                    <Grid Padding="5,0" ColumnSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="95" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Text="Date" FontSize="16" FontAttributes="Bold" HorizontalTextAlignment="Start" />
+                        <Label Grid.Column="1" Text="Value" FontSize="16" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="2" Text="Category" FontSize="16" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                        <Label Grid.Column="3" Text="Description" FontSize="16" FontAttributes="Bold" HorizontalTextAlignment="Start" LineBreakMode="NoWrap" />
+                    </Grid>
                 </DataTemplate>
             </CollectionView.HeaderTemplate>
 
             <!-- Designate how the collection of items are laid out -->
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="1" />
             </CollectionView.ItemsLayout>
 
             <!-- Define the appearance of each item in the list -->
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:CostModel">
-                    <StackLayout>
-                        <HorizontalStackLayout Spacing="25">
-                            <Label Text="{Binding FormattedDate}" FontSize="16" HorizontalTextAlignment="End"/>
-                            <Label Text="{Binding Value, StringFormat='{0:F2}'}" FontSize="16" WidthRequest="60" HorizontalTextAlignment="End"/>
-                            <Label Text="{Binding Category.Name}" FontSize="16" MinimumWidthRequest="70" HorizontalTextAlignment="End"/>
-                            <Label Text="{Binding Description}" FontSize="16" MinimumWidthRequest="0" HorizontalTextAlignment="End"
-                                   LineBreakMode="TailTruncation"
-                                   ToolTipProperties.Text="{Binding Description}"/>
-                        </HorizontalStackLayout>
-                    </StackLayout>
+                    <Grid Padding="5,6" ColumnSpacing="0">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCostTapped" />
+                        </Grid.GestureRecognizers>
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="95" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="Transparent" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Label Grid.Column="0" Text="{Binding FormattedDate}" FontSize="16" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
+                        <Label Grid.Column="1" Text="{Binding Value, StringFormat='{0:F2}'}" FontSize="16" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                        <Label Grid.Column="2" Text="{Binding Category.Name}" FontSize="16" VerticalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="NoWrap"/>
+                        <Label Grid.Column="3" Text="{Binding Description}" FontSize="16" VerticalOptions="Center" HorizontalTextAlignment="Start"
+                               LineBreakMode="TailTruncation"
+                               ToolTipProperties.Text="{Binding Description}"/>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
 
@@ -93,6 +107,5 @@
             </CollectionView.Footer>
         </CollectionView>
 
-        </Grid>
-        </Grid>
+    </Grid>
 </ContentPage>

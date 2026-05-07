@@ -10,7 +10,7 @@ Thank you for using **FastCost**. This Privacy Policy explains how FastCost hand
 It operates fully offline and does not require any personal permissions on the device.**
 
 ## No Data Collection
-Any information entered in the app—such as expenses—is stored **only locally on the device** in the app's private storage. This data is not collected, transmitted, or shared.
+Any information entered in the app, such as expenses, is stored **only locally on the device** in the app's private storage. This data is not collected, transmitted, or shared.
 
 The app does not track, store, or transmit identifying information such as:
 - IP addresses or device identifiers

@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using FastCost.Core.Models;
 using FastCost.Core.Services;
 using Mapster;
@@ -27,7 +27,6 @@ public partial class AllCostsPage : ContentPage
             var costs = await _allCostsService.LoadCostsByMonth(allCosts.SelectedDate);
             allCosts.Costs = new ObservableCollection<CostModel>(costs.Adapt<List<CostModel>>().OrderBy(c => c.Date));
             allCosts.Sum = allCosts.Costs.Sum(c => c.Value ?? 0);
-            costsCollection.SelectionMode = SelectionMode.Single;
         }
 
         _isNavigating = false;
@@ -50,16 +49,26 @@ public partial class AllCostsPage : ContentPage
         await Shell.Current.GoToAsync(nameof(CostPage));
     }
 
-    private async void CostsCollection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void OnCostTapped(object sender, EventArgs e)
     {
-        if (_isNavigating || e.CurrentSelection.Count == 0) return;
+        if (_isNavigating) return;
+
+        var grid = (Grid)sender;
+        if (grid.BindingContext is not CostModel cost) return;
 
         _isNavigating = true;
         try
         {
-            var cost = (CostModel)e.CurrentSelection[0];
-            costsCollection.SelectionMode = SelectionMode.None;
+            // Manual highlight using VisualStateManager
+            VisualStateManager.GoToState(grid, "Selected");
+            
+            // Allow time for the highlight to be seen
+            await Task.Delay(200);
+
             await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.ItemId)}={cost.Id}");
+            
+            // Reset state so it's normal when coming back
+            VisualStateManager.GoToState(grid, "Normal");
         }
         finally
         {
