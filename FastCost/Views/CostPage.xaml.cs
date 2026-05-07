@@ -96,12 +96,20 @@ public partial class CostPage : ContentPage
 
         categoriesCollection.ItemsSource = _cachedCategories;
 
-        if (BindingContext is CostModel costModel && costModel.CategoryId != null)
+        if (BindingContext is CostModel costModel)
         {
-            categoriesCollection.SelectedItem = _cachedCategories?.FirstOrDefault(c => c.Id == costModel.CategoryId);
-        }
+            if (costModel.CategoryId != null)
+            {
+                categoriesCollection.SelectedItem = _cachedCategories?.FirstOrDefault(c => c.Id == costModel.CategoryId);
+            }
 
-        CostValueEditor.Focus();
+            // Focus value editor only when adding a new cost (value is null or zero)
+            // This prevents the keyboard from automatically popping up when just viewing/editing existing costs
+            if (costModel.Value == null || costModel.Value == 0)
+            {
+                CostValueEditor.Focus();
+            }
+        }
     }
 
     private void OnCostValueCompleted(object sender, EventArgs e)
