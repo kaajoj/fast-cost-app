@@ -53,7 +53,7 @@
                     Clicked="DeleteButton_Clicked" />
         </Grid>
 
-        <Label Text="Select category:" FontSize="24" Padding="2" Margin="4" />
+        <Label Text="Select category:" FontSize="24" Padding="2" Margin="4" HorizontalOptions="Center" HorizontalTextAlignment="Center" />
 
         <CollectionView x:Name="categoriesCollection"
                         SelectionMode="Single"
