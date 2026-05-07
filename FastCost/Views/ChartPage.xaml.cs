@@ -40,15 +40,6 @@ public partial class ChartPage : ContentPage
                 Values = values,
                 Name = "Expenses",
                 Fill = new SolidColorPaint(SKColors.CadetBlue)
-            },
-            new LineSeries<double>
-            {
-                Values = values,
-                Name = "Trend",
-                Stroke = new SolidColorPaint(SKColors.Orange) { StrokeThickness = 3 },
-                Fill = null,
-                GeometrySize = 8,
-                GeometryStroke = new SolidColorPaint(SKColors.Orange) { StrokeThickness = 2 }
             }
         };
 
