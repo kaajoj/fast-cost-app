@@ -36,6 +36,13 @@ public partial class CostPage : ContentPage
         BindingContext = new CostModel();
         _costRepository = costRepository;
         _categoryRepository = categoryRepository;
+
+        // Immediately use cache if available to avoid "pop-in" effect
+        if (_cachedCategories != null)
+        {
+            categoriesCollection.ItemsSource = _cachedCategories;
+        }
+        
         _preloadTask = PreloadCategoriesAsync();
     }
 
@@ -44,8 +51,14 @@ public partial class CostPage : ContentPage
         if (_cachedCategories != null) return;
         var categories = await _categoryRepository.GetCategories();
         _cachedCategories = categories
-            .Select(c => new CategoryItem(c.Id, c.Name, _emojiMap.GetValueOrDefault(c.Name, "❓")))
+            .Select(c => new CategoryItem(c.Id, c.Name, _emojiMap.GetValueOrDefault(c.Name.ToLower(), "❓")))
             .ToList();
+        
+        // If it was loaded for the first time, set it now
+        if (categoriesCollection.ItemsSource == null)
+        {
+            categoriesCollection.ItemsSource = _cachedCategories;
+        }
     }
 
     public string ItemId
@@ -94,7 +107,11 @@ public partial class CostPage : ContentPage
             _loadCostTask ?? Task.CompletedTask,
             _preloadTask ?? Task.CompletedTask);
 
-        categoriesCollection.ItemsSource = _cachedCategories;
+        // Ensure ItemsSource is set (in case it wasn't set in constructor or preload)
+        if (categoriesCollection.ItemsSource == null)
+        {
+            categoriesCollection.ItemsSource = _cachedCategories;
+        }
 
         if (BindingContext is CostModel costModel)
         {
@@ -104,7 +121,6 @@ public partial class CostPage : ContentPage
             }
 
             // Focus value editor only when adding a new cost (value is null or zero)
-            // This prevents the keyboard from automatically popping up when just viewing/editing existing costs
             if (costModel.Value == null || costModel.Value == 0)
             {
                 CostValueEditor.Focus();
@@ -119,8 +135,6 @@ public partial class CostPage : ContentPage
 
     private void OnDescriptionCompleted(object sender, EventArgs e)
     {
-        // Keep focus trapped on DescriptionEditor to prevent Enter key
-        // from propagating to Shell navigation elements (back button)
     }
 
     private void OnCategorySelected(object sender, SelectionChangedEventArgs e)

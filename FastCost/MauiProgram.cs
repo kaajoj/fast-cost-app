@@ -1,4 +1,4 @@
-﻿using FastCost.Core.DAL;
+using FastCost.Core.DAL;
 using FastCost.Core.Mappings;
 using FastCost.Core.Services;
 using CommunityToolkit.Maui;
@@ -32,7 +32,13 @@ public static class MauiProgram
         builder.Services.AddScoped<IAllCostsService, AllCostsService>();
 		builder.Services.AddScoped<ICostRepository, CostRepository>();
 		builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-		builder.Services.AddTransient<Views.ChartPage>();
+
+        // Register Pages
+        builder.Services.AddTransient<Views.MainPage>();
+        builder.Services.AddTransient<Views.AllCostsPage>();
+        builder.Services.AddTransient<Views.AnalysisPage>();
+        builder.Services.AddTransient<Views.CostPage>();
+        builder.Services.AddTransient<Views.ChartPage>();
 
 #if DEBUG
 		builder.Logging.AddDebug();
