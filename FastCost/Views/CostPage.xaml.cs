@@ -2,6 +2,7 @@ using FastCost.Core;
 using FastCost.Core.DAL;
 using FastCost.Core.DAL.Entities;
 using FastCost.Core.Models;
+using FastCost.Core.Services;
 using Mapster;
 using System.Globalization;
 
@@ -156,6 +157,7 @@ public partial class CostPage : ContentPage
                 costModel.Value = enteredCost;
                 var cost = costModel.Adapt<Cost>();
                 await _costRepository.SaveCostAsync(cost);
+                AppState.NotifyDataChanged();
             }
 
             await Shell.Current.GoToAsync("..");
@@ -180,6 +182,7 @@ public partial class CostPage : ContentPage
             if (await DisplayAlertAsync("Delete cost", "Do you want to remove the cost with the value: " + cost.Value + "?", "Yes", "No"))
             {
                 await _costRepository.DeleteCostAsync(cost);
+                AppState.NotifyDataChanged();
                 await Shell.Current.GoToAsync("..");
             }
         }

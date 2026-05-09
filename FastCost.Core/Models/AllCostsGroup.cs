@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -6,7 +6,19 @@ namespace FastCost.Core.Models
 {
     public class AllCostsGroup : INotifyPropertyChanged
     {
-        public ObservableCollection<IGrouping<CategoryModel, CostModel>> GroupCosts { get; set; } = new();
+        private ObservableCollection<IGrouping<CategoryModel, CostModel>> _groupCosts = new();
+        public ObservableCollection<IGrouping<CategoryModel, CostModel>> GroupCosts 
+        { 
+            get => _groupCosts;
+            set
+            {
+                if (_groupCosts != value)
+                {
+                    _groupCosts = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         private DateTime _selectedDate = DateTime.Now;
         public DateTime SelectedDate

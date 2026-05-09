@@ -1,20 +1,23 @@
-﻿using FastCost.Core.DAL.Entities;
+using FastCost.Core.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastCost.Core.DAL
 {
     public class CostRepository : ICostRepository
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
 
-        public CostRepository(AppDbContext dbContext)
+        public CostRepository(IDbContextFactory<AppDbContext> dbContextFactory)
         {
-            _dbContext = dbContext;
+            _dbContextFactory = dbContextFactory;
         }
 
         public async Task<List<Cost>> GetCostsAsync()
         {
-            return await _dbContext.Costs.ToListAsync();
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            return await dbContext.Costs
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<List<Cost>> GetCostsByMonth(DateTime date)
@@ -22,7 +25,9 @@ namespace FastCost.Core.DAL
             var startDate = new DateTime(date.Year, date.Month, 1);
             var endDate = startDate.AddMonths(1);
 
-            return await _dbContext.Costs
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            return await dbContext.Costs
+                .AsNoTracking()
                 .Where(c => c.Date >= startDate && c.Date < endDate)
                 .Include(c => c.Category)
                 .ToListAsync();
@@ -30,39 +35,41 @@ namespace FastCost.Core.DAL
 
         public async Task<List<Cost>> GetCostsByDateRange(DateTime startDate, DateTime endDate)
         {
-            return await _dbContext.Costs
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            return await dbContext.Costs
+                .AsNoTracking()
                 .Where(c => c.Date >= startDate && c.Date < endDate)
                 .ToListAsync();
         }
 
         public async Task<Cost?> GetCostAsync(int id)
         {
-            return await _dbContext.Costs.FirstOrDefaultAsync(i => i.Id == id);
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            return await dbContext.Costs
+                .AsNoTracking()
+                .FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<int> SaveCostAsync(Cost cost)
         {
+            using var dbContext = _dbContextFactory.CreateDbContext();
             if (cost.Id != 0)
             {
-                var existing = await _dbContext.Costs.FindAsync(cost.Id);
-                if (existing != null)
-                    _dbContext.Entry(existing).CurrentValues.SetValues(cost);
+                dbContext.Update(cost);
             }
             else
             {
-                await _dbContext.Costs.AddAsync(cost);
+                await dbContext.Costs.AddAsync(cost);
             }
 
-            return await _dbContext.SaveChangesAsync();
+            return await dbContext.SaveChangesAsync();
         }
 
         public async Task<int> DeleteCostAsync(Cost cost)
         {
-            var existing = await _dbContext.Costs.FindAsync(cost.Id);
-            if (existing != null)
-                _dbContext.Costs.Remove(existing);
-
-            return await _dbContext.SaveChangesAsync();
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            dbContext.Costs.Remove(cost);
+            return await dbContext.SaveChangesAsync();
         }
     }
 }

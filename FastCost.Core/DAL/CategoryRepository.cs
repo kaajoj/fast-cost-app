@@ -1,45 +1,53 @@
-﻿using FastCost.Core.DAL.Entities;
+using FastCost.Core.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastCost.Core.DAL
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
 
-        public CategoryRepository(AppDbContext dbContext)
+        public CategoryRepository(IDbContextFactory<AppDbContext> dbContextFactory)
         {
-            _dbContext = dbContext;
+            _dbContextFactory = dbContextFactory;
         }
 
         public async Task<List<Category>> GetCategories()
         {
-            return await _dbContext.Categories.ToListAsync();
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            return await dbContext.Categories
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<Category?> GetCategory(int id)
         {
-            return await _dbContext.Categories.FirstOrDefaultAsync(c => c.Id == id);
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            return await dbContext.Categories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<int> SaveCategory(Category category)
         {
+            using var dbContext = _dbContextFactory.CreateDbContext();
             if (category.Id != 0)
             {
-                _dbContext.Categories.Update(category);
+                dbContext.Update(category);
             }
             else
             {
-                await _dbContext.Categories.AddAsync(category);
+                await dbContext.Categories.AddAsync(category);
             }
 
-            return await _dbContext.SaveChangesAsync();
+            return await dbContext.SaveChangesAsync();
         }
 
         public async Task<int> DeleteCategory(Category category)
         {
-            _dbContext.Categories.Remove(category);
-            return await _dbContext.SaveChangesAsync();
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            dbContext.Remove(category);
+            return await dbContext.SaveChangesAsync();
         }
     }
 }

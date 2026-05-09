@@ -9,6 +9,9 @@ public partial class AllCostsPage : ContentPage
 {
     private readonly IAllCostsService _allCostsService;
     private bool _isNavigating = false;
+    private int _localDataVersion = 0;
+    private DateTime? _lastLoadedDate = null;
+    private DateTime? _loadingForDate = null;
 
     public AllCostsPage(IAllCostsService allCostsService)
 	{
@@ -17,19 +20,50 @@ public partial class AllCostsPage : ContentPage
         this.BindingContext = new AllCosts();
     }
 
+    public Task PreloadDataAsync()
+    {
+        return BindingContext is AllCosts allCosts ? LoadData(allCosts) : Task.CompletedTask;
+    }
+
     protected override async void OnNavigatedTo(NavigatedToEventArgs state)
     {
         base.OnNavigatedTo(state);
-        _isNavigating = true;
 
-        if (BindingContext is AllCosts allCosts)
+        if (BindingContext is AllCosts allCosts && NeedsReload(allCosts.SelectedDate))
         {
-            var costs = await _allCostsService.LoadCostsByMonth(allCosts.SelectedDate);
-            allCosts.Costs = new ObservableCollection<CostModel>(costs.Adapt<List<CostModel>>().OrderBy(c => c.Date));
-            allCosts.Sum = allCosts.Costs.Sum(c => c.Value ?? 0);
+            await LoadData(allCosts);
         }
+    }
 
-        _isNavigating = false;
+    private bool NeedsReload(DateTime date)
+    {
+        return _localDataVersion != AppState.DataVersion
+            || _lastLoadedDate?.Month != date.Month
+            || _lastLoadedDate?.Year != date.Year;
+    }
+
+    private async Task LoadData(AllCosts allCosts)
+    {
+        var date = allCosts.SelectedDate;
+        if (_loadingForDate == date) return;
+
+        _loadingForDate = date;
+        try
+        {
+            var costs = await _allCostsService.LoadCostsByMonth(date);
+            if (allCosts.SelectedDate != date) return;
+
+            var mapped = costs.Adapt<List<CostModel>>().OrderBy(c => c.Date);
+            allCosts.Costs = new ObservableCollection<CostModel>(mapped);
+            allCosts.Sum = allCosts.Costs.Sum(c => c.Value ?? 0);
+
+            _localDataVersion = AppState.DataVersion;
+            _lastLoadedDate = date;
+        }
+        finally
+        {
+            if (_loadingForDate == date) _loadingForDate = null;
+        }
     }
 
     private async void OnSwipedLeft(object sender, SwipedEventArgs e)
@@ -59,15 +93,9 @@ public partial class AllCostsPage : ContentPage
         _isNavigating = true;
         try
         {
-            // Manual highlight using VisualStateManager
             VisualStateManager.GoToState(grid, "Selected");
-            
-            // Allow time for the highlight to be seen
             await Task.Delay(200);
-
             await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.ItemId)}={cost.Id}");
-            
-            // Reset state so it's normal when coming back
             VisualStateManager.GoToState(grid, "Normal");
         }
         finally
@@ -94,16 +122,9 @@ public partial class AllCostsPage : ContentPage
 
     private async void MyDatePicker_DateSelected(object sender, DateChangedEventArgs e)
     {
-        if (e.NewDate != null)
+        if (e.NewDate != null && BindingContext is AllCosts allCosts)
         {
-            DateTime selectedDate = (DateTime)e.NewDate;
-
-            if (BindingContext is AllCosts allCosts)
-            {
-                var costs = await _allCostsService.LoadCostsByMonth(selectedDate);
-                allCosts.Costs = new ObservableCollection<CostModel>(costs.Adapt<List<CostModel>>().OrderBy(c => c.Date));
-                allCosts.Sum = allCosts.Costs.Sum(c => c.Value ?? 0);
-            }
+            await LoadData(allCosts);
         }
     }
 }

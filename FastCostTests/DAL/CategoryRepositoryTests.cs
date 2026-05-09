@@ -7,13 +7,13 @@ namespace FastCostTests.DAL
 {
     public class CategoryRepositoryTests
     {
-        private static AppDbContext CreateContext()
-        {
-            var options = new DbContextOptionsBuilder<AppDbContext>()
+        private readonly DbContextOptions<AppDbContext> _options =
+            new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
-            return new AppDbContext(options);
-        }
+
+        private AppDbContext CreateContext() => new(_options);
+        private CategoryRepository CreateRepo() => new(new TestDbContextFactory(_options));
 
         [Fact]
         public async Task GetCategories_ShouldReturnAllCategories()
@@ -24,7 +24,7 @@ namespace FastCostTests.DAL
                 new Category { Name = "transport" }
             );
             await context.SaveChangesAsync();
-            var repo = new CategoryRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCategories();
 
@@ -35,7 +35,7 @@ namespace FastCostTests.DAL
         public async Task GetCategories_ShouldReturnEmpty_WhenNoCategories()
         {
             using var context = CreateContext();
-            var repo = new CategoryRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCategories();
 
@@ -49,7 +49,7 @@ namespace FastCostTests.DAL
             var category = new Category { Name = "shopping" };
             context.Categories.Add(category);
             await context.SaveChangesAsync();
-            var repo = new CategoryRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCategory(category.Id);
 
@@ -61,7 +61,7 @@ namespace FastCostTests.DAL
         public async Task GetCategory_ShouldReturnNull_WhenNotExists()
         {
             using var context = CreateContext();
-            var repo = new CategoryRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCategory(999);
 
@@ -72,12 +72,13 @@ namespace FastCostTests.DAL
         public async Task SaveCategory_ShouldInsert_WhenIdIsZero()
         {
             using var context = CreateContext();
-            var repo = new CategoryRepository(context);
+            var repo = CreateRepo();
             var category = new Category { Name = "newCategory" };
 
             await repo.SaveCategory(category);
 
-            var saved = await context.Categories.FirstOrDefaultAsync(c => c.Name == "newCategory");
+            using var verify = CreateContext();
+            var saved = await verify.Categories.FirstOrDefaultAsync(c => c.Name == "newCategory");
             Assert.NotNull(saved);
         }
 
@@ -88,12 +89,13 @@ namespace FastCostTests.DAL
             var category = new Category { Name = "original" };
             context.Categories.Add(category);
             await context.SaveChangesAsync();
-            var repo = new CategoryRepository(context);
+            var repo = CreateRepo();
 
             category.Name = "updated";
             await repo.SaveCategory(category);
 
-            var updated = await context.Categories.FindAsync(category.Id);
+            using var verify = CreateContext();
+            var updated = await verify.Categories.FindAsync(category.Id);
             Assert.NotNull(updated);
             Assert.Equal("updated", updated.Name);
         }
@@ -105,11 +107,12 @@ namespace FastCostTests.DAL
             var category = new Category { Name = "toDelete" };
             context.Categories.Add(category);
             await context.SaveChangesAsync();
-            var repo = new CategoryRepository(context);
+            var repo = CreateRepo();
 
             await repo.DeleteCategory(category);
 
-            var deleted = await context.Categories.FindAsync(category.Id);
+            using var verify = CreateContext();
+            var deleted = await verify.Categories.FindAsync(category.Id);
             Assert.Null(deleted);
         }
     }

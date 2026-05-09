@@ -1,4 +1,4 @@
-﻿using FastCost.Core.DAL;
+using FastCost.Core.DAL;
 using FastCost.Core.DAL.Entities;
 using FastCost.Core.Models;
 using Mapster;
@@ -14,15 +14,27 @@ namespace FastCost.Core.Services
             _costRepository = costRepository;
         }
 
-        public async Task<List<Cost>> LoadCostsBackUp()
+        public Task<List<Cost>> LoadCostsBackUp()
         {
-            var results = await _costRepository.GetCostsAsync();
-            return results;
+            return _costRepository.GetCostsAsync();
         }
 
-        public async Task<List<Cost>> LoadCostsByMonth(DateTime date)
+        public Task<List<Cost>> LoadCostsByMonth(DateTime date)
         {
-            return await _costRepository.GetCostsByMonth(date);
+            return _costRepository.GetCostsByMonth(date);
+        }
+
+        public async Task<IEnumerable<IGrouping<CategoryModel, CostModel>>> GetCostsByMonthGroupByCategory(DateTime date)
+        {
+            var results = await _costRepository.GetCostsByMonth(date);
+
+            return results.Adapt<List<CostModel>>()
+                .Select(c =>
+                {
+                    c.Category ??= new CategoryModel { Name = "no category" };
+                    return c;
+                })
+                .GroupBy(cost => cost.Category);
         }
 
         public async Task<decimal> GetSum(DateTime date)
@@ -43,7 +55,7 @@ namespace FastCost.Core.Services
                 .GroupBy(c => new { c.Date.Year, c.Date.Month })
                 .ToDictionary(g => (g.Key.Year, g.Key.Month), g => g.Sum(c => c.Value));
 
-            var results = new List<(string Month, decimal Total)>();
+            var results = new List<(string Month, decimal Total)>(months);
             for (int i = months - 1; i >= 0; i--)
             {
                 var date = now.AddMonths(-i);
@@ -52,22 +64,6 @@ namespace FastCost.Core.Services
             }
 
             return results;
-        }
-
-        public async Task<IEnumerable<IGrouping<CategoryModel, CostModel>>> GetCostsByMonthGroupByCategory(DateTime date)
-        {
-            var results = await _costRepository.GetCostsByMonth(date);
-            var costs = results.Adapt<List<CostModel>>();
-
-            foreach (var cost in costs)
-            {
-                if (cost.Category is null)
-                {
-                    cost.Category = new CategoryModel { Name = "no category" };
-                }
-            }
-
-            return costs.GroupBy(cost => cost.Category);
         }
     }
 }

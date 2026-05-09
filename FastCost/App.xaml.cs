@@ -1,30 +1,32 @@
-﻿using FastCost.Core.DAL;
-using FastCost.Core.Services;
+using FastCost.Core.DAL;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastCost;
 
 public partial class App : Application
 {
-    public static Task DbInitTask { get; private set; } = Task.CompletedTask;
+    private static readonly TaskCompletionSource _dbInitTcs = new();
+    public static Task DbInitTask => _dbInitTcs.Task;
 
     public App(IServiceProvider serviceProvider)
 	{
         InitializeComponent();
-        DbInitTask = Task.Run(() => InitializeDatabase(serviceProvider));
+        _ = Task.Run(() => InitializeDatabase(serviceProvider));
     }
 
     private static void InitializeDatabase(IServiceProvider serviceProvider)
     {
         try
         {
-            using var scope = serviceProvider.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var factory = serviceProvider.GetRequiredService<IDbContextFactory<AppDbContext>>();
+            using var dbContext = factory.CreateDbContext();
             dbContext.Database.Migrate();
+            _dbInitTcs.SetResult();
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error creating database: {ex.Message}");
+            _dbInitTcs.SetException(ex);
         }
     }
 

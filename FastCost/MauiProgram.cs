@@ -25,18 +25,18 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-        builder.Services.AddDbContext<AppDbContext>();
+        builder.Services.AddDbContextFactory<AppDbContext>();
 
         MapsterConfig.RegisterMappings();
 
-        builder.Services.AddScoped<IAllCostsService, AllCostsService>();
-		builder.Services.AddScoped<ICostRepository, CostRepository>();
-		builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+        builder.Services.AddSingleton<IAllCostsService, AllCostsService>();
+		builder.Services.AddSingleton<ICostRepository, CostRepository>();
+		builder.Services.AddSingleton<ICategoryRepository, CategoryRepository>();
 
-        // Register Pages
-        builder.Services.AddTransient<Views.MainPage>();
-        builder.Services.AddTransient<Views.AllCostsPage>();
-        builder.Services.AddTransient<Views.AnalysisPage>();
+        builder.Services.AddSingleton<Views.MainPage>();
+        builder.Services.AddSingleton<Views.AllCostsPage>();
+        builder.Services.AddSingleton<Views.AnalysisPage>();
+
         builder.Services.AddTransient<Views.CostPage>();
         builder.Services.AddTransient<Views.ChartPage>();
 

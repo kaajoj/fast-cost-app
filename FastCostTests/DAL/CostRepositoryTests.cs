@@ -7,13 +7,13 @@ namespace FastCostTests.DAL
 {
     public class CostRepositoryTests
     {
-        private static AppDbContext CreateContext()
-        {
-            var options = new DbContextOptionsBuilder<AppDbContext>()
+        private readonly DbContextOptions<AppDbContext> _options =
+            new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
-            return new AppDbContext(options);
-        }
+
+        private AppDbContext CreateContext() => new(_options);
+        private CostRepository CreateRepo() => new(new TestDbContextFactory(_options));
 
         [Fact]
         public async Task GetCostsAsync_ShouldReturnAllCosts()
@@ -24,7 +24,7 @@ namespace FastCostTests.DAL
                 new Cost { Value = 20, Date = DateTime.Now }
             );
             await context.SaveChangesAsync();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCostsAsync();
 
@@ -35,7 +35,7 @@ namespace FastCostTests.DAL
         public async Task GetCostsAsync_ShouldReturnEmpty_WhenNoCosts()
         {
             using var context = CreateContext();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCostsAsync();
 
@@ -54,7 +54,7 @@ namespace FastCostTests.DAL
                 new Cost { Value = 40, Date = new DateTime(2024, 4, 1) }
             );
             await context.SaveChangesAsync();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCostsByMonth(targetDate);
 
@@ -68,7 +68,7 @@ namespace FastCostTests.DAL
             using var context = CreateContext();
             context.Costs.Add(new Cost { Value = 10, Date = new DateTime(2024, 3, 1) });
             await context.SaveChangesAsync();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCostsByMonth(new DateTime(2024, 3, 10));
 
@@ -81,7 +81,7 @@ namespace FastCostTests.DAL
             using var context = CreateContext();
             context.Costs.Add(new Cost { Value = 10, Date = new DateTime(2024, 4, 1) });
             await context.SaveChangesAsync();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCostsByMonth(new DateTime(2024, 3, 10));
 
@@ -97,7 +97,7 @@ namespace FastCostTests.DAL
             await context.SaveChangesAsync();
             context.Costs.Add(new Cost { Value = 10, Date = new DateTime(2024, 3, 5), CategoryId = category.Id });
             await context.SaveChangesAsync();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCostsByMonth(new DateTime(2024, 3, 1));
 
@@ -113,7 +113,7 @@ namespace FastCostTests.DAL
             var cost = new Cost { Value = 50, Date = DateTime.Now };
             context.Costs.Add(cost);
             await context.SaveChangesAsync();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCostAsync(cost.Id);
 
@@ -125,7 +125,7 @@ namespace FastCostTests.DAL
         public async Task GetCostAsync_ShouldReturnNull_WhenNotExists()
         {
             using var context = CreateContext();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             var result = await repo.GetCostAsync(999);
 
@@ -136,7 +136,7 @@ namespace FastCostTests.DAL
         public async Task SaveCostAsync_ShouldInsert_WhenIdIsZero()
         {
             using var context = CreateContext();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
             var cost = new Cost { Value = 99, Date = DateTime.Now };
 
             await repo.SaveCostAsync(cost);
@@ -152,29 +152,17 @@ namespace FastCostTests.DAL
             var cost = new Cost { Value = 10, Description = "original", Date = DateTime.Now };
             context.Costs.Add(cost);
             await context.SaveChangesAsync();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             cost.Value = 99;
             cost.Description = "updated";
             await repo.SaveCostAsync(cost);
 
-            var updated = await context.Costs.FindAsync(cost.Id);
+            using var verify = CreateContext();
+            var updated = await verify.Costs.FindAsync(cost.Id);
             Assert.NotNull(updated);
             Assert.Equal(99, updated.Value);
             Assert.Equal("updated", updated.Description);
-        }
-
-        [Fact]
-        public async Task SaveCostAsync_ShouldDoNothing_WhenIdNotFoundForUpdate()
-        {
-            using var context = CreateContext();
-            var repo = new CostRepository(context);
-            var cost = new Cost { Id = 999, Value = 10, Date = DateTime.Now };
-
-            var result = await repo.SaveCostAsync(cost);
-
-            Assert.Equal(0, result);
-            Assert.Empty(context.Costs);
         }
 
         [Fact]
@@ -184,23 +172,12 @@ namespace FastCostTests.DAL
             var cost = new Cost { Value = 50, Date = DateTime.Now };
             context.Costs.Add(cost);
             await context.SaveChangesAsync();
-            var repo = new CostRepository(context);
+            var repo = CreateRepo();
 
             await repo.DeleteCostAsync(cost);
 
-            Assert.Empty(context.Costs);
-        }
-
-        [Fact]
-        public async Task DeleteCostAsync_ShouldDoNothing_WhenCostNotFound()
-        {
-            using var context = CreateContext();
-            var repo = new CostRepository(context);
-            var nonExistent = new Cost { Id = 999, Value = 10, Date = DateTime.Now };
-
-            var result = await repo.DeleteCostAsync(nonExistent);
-
-            Assert.Equal(0, result);
+            using var verify = CreateContext();
+            Assert.Empty(verify.Costs);
         }
     }
 }

@@ -1,31 +1,55 @@
-﻿using FastCost.Core;
-using FastCost.Core.DAL;
+using FastCost.Core;
+using FastCost.Core.Services;
 using System.Globalization;
 
 namespace FastCost.Views;
 
 public partial class MainPage : ContentPage
 {
-    private readonly ICostRepository _costRepository;
+    private readonly IAllCostsService _allCostsService;
+    private readonly IServiceProvider _serviceProvider;
     private bool _isNavigating = false;
+    private bool _isPreloaded = false;
 
-    public MainPage(ICostRepository costRepository)
+    public MainPage(IAllCostsService allCostsService, IServiceProvider serviceProvider)
 	{
 		InitializeComponent();
-        _costRepository = costRepository;
+        _allCostsService = allCostsService;
+        _serviceProvider = serviceProvider;
     }
-    
+
     protected override async void OnAppearing()
     {
+        base.OnAppearing();
         await App.DbInitTask;
 
         var currentDate = DateTime.UtcNow.Date;
-        var costs = await _costRepository.GetCostsByMonth(currentDate);
-
-        var costsInCurrentMonth = costs.Sum(c => c.Value);
+        var totalSum = await _allCostsService.GetSum(currentDate);
 
         var currentMonthName = DateTime.UtcNow.Date.ToString("MMMM");
-        SummaryText.Text = $"Expenses in {currentMonthName}: {costsInCurrentMonth}";
+        SummaryText.Text = $"Expenses in {currentMonthName}: {totalSum}";
+
+        if (!_isPreloaded)
+        {
+            _isPreloaded = true;
+            _ = PreloadOtherPagesAsync();
+        }
+    }
+
+    private async Task PreloadOtherPagesAsync()
+    {
+        try
+        {
+            var allCostsPage = _serviceProvider.GetService<AllCostsPage>();
+            if (allCostsPage != null) await allCostsPage.PreloadDataAsync();
+
+            var analysisPage = _serviceProvider.GetService<AnalysisPage>();
+            if (analysisPage != null) await analysisPage.PreloadDataAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Preload error: {ex.Message}");
+        }
     }
 
     private void OnCostChanged(object sender, TextChangedEventArgs e)
@@ -75,6 +99,7 @@ public partial class MainPage : ContentPage
             var enteredCost = CostParser.Parse(CostText.Text);
             CostText.Text = string.Empty;
             await CostText.HideSoftInputAsync(CancellationToken.None);
+            
             await Shell.Current.GoToAsync($"{nameof(CostPage)}?{nameof(CostPage.CostValue)}={enteredCost.ToString(CultureInfo.InvariantCulture)}", true);
         }
         catch (ArgumentNullException)
@@ -91,4 +116,3 @@ public partial class MainPage : ContentPage
         }
     }
 }
-
