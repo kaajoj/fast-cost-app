@@ -1,5 +1,7 @@
 using FastCost.Core.Services;
 using LiveChartsCore;
+using LiveChartsCore.Kernel;
+using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
@@ -11,11 +13,13 @@ public partial class ChartPage : ContentPage
     private const int DefaultMonthsToDisplay = 4;
     private readonly IAllCostsService _allCostsService;
     private bool _loaded;
+    private string[] _labels = Array.Empty<string>();
 
     public ChartPage(IAllCostsService allCostsService)
     {
         InitializeComponent();
         _allCostsService = allCostsService;
+        chart.DataPointerDown += OnDataPointerDown;
     }
 
     protected override void OnAppearing()
@@ -31,7 +35,7 @@ public partial class ChartPage : ContentPage
         var data = await _allCostsService.GetMonthlyTotals(DefaultMonthsToDisplay);
 
         var values = data.Select(d => (double)d.Total).ToArray();
-        var labels = data.Select(d => d.Month).ToArray();
+        _labels = data.Select(d => d.Month).ToArray();
 
         var series = new ISeries[]
         {
@@ -47,7 +51,7 @@ public partial class ChartPage : ContentPage
         {
             new Axis
             {
-                Labels = labels,
+                Labels = _labels,
                 LabelsRotation = 0,
                 MinStep = 1,
                 ForceStepToMin = true
@@ -65,6 +69,16 @@ public partial class ChartPage : ContentPage
         chart.XAxes = xAxes;
         chart.YAxes = yAxes;
         chart.Series = series;
+    }
+
+    private void OnDataPointerDown(IChartView sender, IEnumerable<ChartPoint> points)
+    {
+        var point = points.FirstOrDefault();
+        if (point == null) return;
+
+        var idx = (int)point.Coordinate.SecondaryValue;
+        var month = idx >= 0 && idx < _labels.Length ? _labels[idx] : string.Empty;
+        SelectedValueLabel.Text = $"{month}: {point.Coordinate.PrimaryValue:0.##}";
     }
 
     private async void OnClose(object sender, EventArgs e)
