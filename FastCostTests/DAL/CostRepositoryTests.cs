@@ -12,6 +12,8 @@ namespace FastCostTests.DAL
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
+        private static CancellationToken Ct => TestContext.Current.CancellationToken;
+
         private AppDbContext CreateContext() => new(_options);
         private CostRepository CreateRepo() => new(new TestDbContextFactory(_options));
 
@@ -23,7 +25,7 @@ namespace FastCostTests.DAL
                 new Cost { Value = 10, Date = DateTime.Now },
                 new Cost { Value = 20, Date = DateTime.Now }
             );
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             var result = await repo.GetCostsAsync();
@@ -53,7 +55,7 @@ namespace FastCostTests.DAL
                 new Cost { Value = 30, Date = new DateTime(2024, 2, 15) },
                 new Cost { Value = 40, Date = new DateTime(2024, 4, 1) }
             );
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             var result = await repo.GetCostsByMonth(targetDate);
@@ -67,7 +69,7 @@ namespace FastCostTests.DAL
         {
             using var context = CreateContext();
             context.Costs.Add(new Cost { Value = 10, Date = new DateTime(2024, 3, 1) });
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             var result = await repo.GetCostsByMonth(new DateTime(2024, 3, 10));
@@ -80,7 +82,7 @@ namespace FastCostTests.DAL
         {
             using var context = CreateContext();
             context.Costs.Add(new Cost { Value = 10, Date = new DateTime(2024, 4, 1) });
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             var result = await repo.GetCostsByMonth(new DateTime(2024, 3, 10));
@@ -94,16 +96,16 @@ namespace FastCostTests.DAL
             using var context = CreateContext();
             var category = new Category { Name = "food" };
             context.Categories.Add(category);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             context.Costs.Add(new Cost { Value = 10, Date = new DateTime(2024, 3, 5), CategoryId = category.Id });
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             var result = await repo.GetCostsByMonth(new DateTime(2024, 3, 1));
 
             Assert.Single(result);
             Assert.NotNull(result[0].Category);
-            Assert.Equal("food", result[0].Category.Name);
+            Assert.Equal("food", result[0].Category!.Name);
         }
 
         [Fact]
@@ -112,7 +114,7 @@ namespace FastCostTests.DAL
             using var context = CreateContext();
             var cost = new Cost { Value = 50, Date = DateTime.Now };
             context.Costs.Add(cost);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             var result = await repo.GetCostAsync(cost.Id);
@@ -141,7 +143,7 @@ namespace FastCostTests.DAL
 
             await repo.SaveCostAsync(cost);
 
-            var saved = await context.Costs.FirstOrDefaultAsync(c => c.Value == 99);
+            var saved = await context.Costs.FirstOrDefaultAsync(c => c.Value == 99, Ct);
             Assert.NotNull(saved);
         }
 
@@ -151,7 +153,7 @@ namespace FastCostTests.DAL
             using var context = CreateContext();
             var cost = new Cost { Value = 10, Description = "original", Date = DateTime.Now };
             context.Costs.Add(cost);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             cost.Value = 99;
@@ -159,7 +161,7 @@ namespace FastCostTests.DAL
             await repo.SaveCostAsync(cost);
 
             using var verify = CreateContext();
-            var updated = await verify.Costs.FindAsync(cost.Id);
+            var updated = await verify.Costs.FindAsync([cost.Id], Ct);
             Assert.NotNull(updated);
             Assert.Equal(99, updated.Value);
             Assert.Equal("updated", updated.Description);
@@ -171,7 +173,7 @@ namespace FastCostTests.DAL
             using var context = CreateContext();
             var cost = new Cost { Value = 50, Date = DateTime.Now };
             context.Costs.Add(cost);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             await repo.DeleteCostAsync(cost);

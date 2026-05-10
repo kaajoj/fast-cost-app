@@ -12,6 +12,8 @@ namespace FastCostTests.DAL
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
 
+        private static CancellationToken Ct => TestContext.Current.CancellationToken;
+
         private AppDbContext CreateContext() => new(_options);
         private CategoryRepository CreateRepo() => new(new TestDbContextFactory(_options));
 
@@ -23,7 +25,7 @@ namespace FastCostTests.DAL
                 new Category { Name = "food" },
                 new Category { Name = "transport" }
             );
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             var result = await repo.GetCategories();
@@ -48,7 +50,7 @@ namespace FastCostTests.DAL
             using var context = CreateContext();
             var category = new Category { Name = "shopping" };
             context.Categories.Add(category);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             var result = await repo.GetCategory(category.Id);
@@ -78,7 +80,7 @@ namespace FastCostTests.DAL
             await repo.SaveCategory(category);
 
             using var verify = CreateContext();
-            var saved = await verify.Categories.FirstOrDefaultAsync(c => c.Name == "newCategory");
+            var saved = await verify.Categories.FirstOrDefaultAsync(c => c.Name == "newCategory", Ct);
             Assert.NotNull(saved);
         }
 
@@ -88,14 +90,14 @@ namespace FastCostTests.DAL
             using var context = CreateContext();
             var category = new Category { Name = "original" };
             context.Categories.Add(category);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             category.Name = "updated";
             await repo.SaveCategory(category);
 
             using var verify = CreateContext();
-            var updated = await verify.Categories.FindAsync(category.Id);
+            var updated = await verify.Categories.FindAsync([category.Id], Ct);
             Assert.NotNull(updated);
             Assert.Equal("updated", updated.Name);
         }
@@ -106,13 +108,13 @@ namespace FastCostTests.DAL
             using var context = CreateContext();
             var category = new Category { Name = "toDelete" };
             context.Categories.Add(category);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(Ct);
             var repo = CreateRepo();
 
             await repo.DeleteCategory(category);
 
             using var verify = CreateContext();
-            var deleted = await verify.Categories.FindAsync(category.Id);
+            var deleted = await verify.Categories.FindAsync([category.Id], Ct);
             Assert.Null(deleted);
         }
     }
