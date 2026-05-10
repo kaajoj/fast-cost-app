@@ -12,7 +12,6 @@ public partial class ChartPage : ContentPage
 {
     private const int DefaultMonthsToDisplay = 4;
     private readonly IAllCostsService _allCostsService;
-    private bool _loaded;
     private string[] _labels = Array.Empty<string>();
 
     public ChartPage(IAllCostsService allCostsService)
@@ -25,8 +24,6 @@ public partial class ChartPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        if (_loaded) return;
-        _loaded = true;
         _ = LoadChartAsync();
     }
 
