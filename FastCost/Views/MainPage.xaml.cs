@@ -23,17 +23,17 @@ public partial class MainPage : ContentPage
         base.OnAppearing();
         await App.DbInitTask;
 
-        var currentDate = DateTime.UtcNow.Date;
-        var totalSum = await _allCostsService.GetSum(currentDate);
-
-        var currentMonthName = DateTime.UtcNow.Date.ToString("MMMM");
-        SummaryText.Text = $"Expenses in {currentMonthName}: {totalSum}";
-
         if (!_isPreloaded)
         {
             _isPreloaded = true;
             _ = PreloadOtherPagesAsync();
         }
+
+        var currentDate = DateTime.UtcNow.Date;
+        var totalSum = await _allCostsService.GetSum(currentDate);
+
+        var currentMonthName = DateTime.UtcNow.Date.ToString("MMMM");
+        SummaryText.Text = $"Expenses in {currentMonthName}: {totalSum}";
     }
 
     private async Task PreloadOtherPagesAsync()
@@ -41,10 +41,11 @@ public partial class MainPage : ContentPage
         try
         {
             var allCostsPage = _serviceProvider.GetService<AllCostsPage>();
-            if (allCostsPage != null) await allCostsPage.PreloadDataAsync();
-
             var analysisPage = _serviceProvider.GetService<AnalysisPage>();
-            if (analysisPage != null) await analysisPage.PreloadDataAsync();
+
+            await Task.WhenAll(
+                allCostsPage?.PreloadDataAsync() ?? Task.CompletedTask,
+                analysisPage?.PreloadDataAsync() ?? Task.CompletedTask);
         }
         catch (Exception ex)
         {
