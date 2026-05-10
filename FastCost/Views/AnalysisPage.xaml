@@ -90,13 +90,13 @@
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid ColumnSpacing="15">
+                            <Grid ColumnSpacing="15" HeightRequest="30">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Column="0" Text="{Binding Value, StringFormat='{0:F2}'}" FontSize="16" Margin="1,0,0,0" HorizontalTextAlignment="End" />
-                                <Label Grid.Column="1" Text="{Binding Description}" FontSize="16" Margin="1,0,0,0" />
+                                <Label Grid.Column="0" Text="{Binding Value, StringFormat='{0:F2}', Mode=OneTime}" FontSize="16" Margin="1,0,0,0" HorizontalTextAlignment="End" InputTransparent="True" />
+                                <Label Grid.Column="1" Text="{Binding Description, Mode=OneTime}" FontSize="16" Margin="1,0,0,0" InputTransparent="True" />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

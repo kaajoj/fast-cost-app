@@ -74,7 +74,7 @@
             <!-- Define the appearance of each item in the list -->
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:CostModel">
-                    <Grid Padding="5,5" ColumnSpacing="0" HeightRequest="38">
+                    <Grid Padding="5,5" ColumnSpacing="0" HeightRequest="39">
                         <Grid.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnCostTapped" />
                         </Grid.GestureRecognizers>
@@ -101,11 +101,11 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
 
-                        <Label Grid.Column="0" Text="{Binding FormattedDate, Mode=OneTime}" FontSize="17" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
-                        <Label Grid.Column="1" Text="{Binding Value, StringFormat='{0:F2}', Mode=OneTime}" FontSize="17" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
-                        <Label Grid.Column="2" Text="{Binding Category.Name, Mode=OneTime}" FontSize="17" VerticalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="NoWrap"/>
+                        <Label Grid.Column="0" Text="{Binding FormattedDate, Mode=OneTime}" FontSize="17" VerticalOptions="Center" HorizontalTextAlignment="Start" InputTransparent="True"/>
+                        <Label Grid.Column="1" Text="{Binding Value, StringFormat='{0:F2}', Mode=OneTime}" FontSize="17" VerticalOptions="Center" HorizontalTextAlignment="Center" InputTransparent="True"/>
+                        <Label Grid.Column="2" Text="{Binding Category.Name, Mode=OneTime}" FontSize="17" VerticalOptions="Center" HorizontalTextAlignment="Center" LineBreakMode="NoWrap" InputTransparent="True"/>
                         <Label Grid.Column="3" Text="{Binding Description, Mode=OneTime}" FontSize="17" VerticalOptions="Center" HorizontalTextAlignment="Start"
-                               LineBreakMode="TailTruncation"/>
+                               LineBreakMode="TailTruncation" InputTransparent="True"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
