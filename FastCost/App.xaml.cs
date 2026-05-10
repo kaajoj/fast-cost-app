@@ -11,16 +11,16 @@ public partial class App : Application
     public App(IServiceProvider serviceProvider)
 	{
         InitializeComponent();
-        _ = Task.Run(() => InitializeDatabase(serviceProvider));
+        _ = InitializeDatabaseAsync(serviceProvider);
     }
 
-    private static void InitializeDatabase(IServiceProvider serviceProvider)
+    private static async Task InitializeDatabaseAsync(IServiceProvider serviceProvider)
     {
         try
         {
             var factory = serviceProvider.GetRequiredService<IDbContextFactory<AppDbContext>>();
-            using var dbContext = factory.CreateDbContext();
-            dbContext.Database.Migrate();
+            await using var dbContext = await factory.CreateDbContextAsync();
+            await dbContext.Database.MigrateAsync();
             _dbInitTcs.SetResult();
         }
         catch (Exception ex)
