@@ -42,24 +42,32 @@
                 <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
             </Grid.GestureRecognizers>
 
-            <Grid RowDefinitions="Auto,*" Margin="20,5,20,20" RowSpacing="10">
+            <Grid RowDefinitions="Auto,*,Auto" Margin="20,5,20,20" RowSpacing="10">
 
-                <HorizontalStackLayout Grid.Row="0" HorizontalOptions="Center" Spacing="2">
-                    <Button Text="&#x2039;" FontSize="32"
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto,*">
+                    <Button Grid.Column="0" Text="&#x2193;" FontSize="26"
                             BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
                             WidthRequest="40" HeightRequest="44" Padding="0"
-                            Clicked="OnPreviousMonth" />
-                    <DatePicker x:Name="AnalysisPageDatePicker"
-                            Date="{Binding SelectedDate}"
-                            Format="MM/yyyy"
-                            FontSize="20"
-                            HorizontalOptions="Center"
-                            DateSelected="DatePicker_DateSelected"/>
-                    <Button Text="&#x203A;" FontSize="32"
-                            BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                            WidthRequest="40" HeightRequest="44" Padding="0"
-                            Clicked="OnNextMonth" />
-                </HorizontalStackLayout>
+                            HorizontalOptions="Start"
+                            Clicked="ScrollToBottom_Clicked" />
+
+                    <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="2">
+                        <Button Text="&#x2039;" FontSize="32"
+                                BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                WidthRequest="40" HeightRequest="44" Padding="0"
+                                Clicked="OnPreviousMonth" />
+                        <DatePicker x:Name="AnalysisPageDatePicker"
+                                Date="{Binding SelectedDate}"
+                                Format="MM/yyyy"
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                DateSelected="DatePicker_DateSelected"/>
+                        <Button Text="&#x203A;" FontSize="32"
+                                BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                WidthRequest="40" HeightRequest="44" Padding="0"
+                                Clicked="OnNextMonth" />
+                    </HorizontalStackLayout>
+                </Grid>
 
                 <CollectionView x:Name="CollectionViewGroup"
                             Grid.Row="1"
@@ -80,12 +88,15 @@
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-
-                    <CollectionView.Footer >
-                        <Label x:Name = "SumText" Text="{Binding Sum, StringFormat='Total sum: {0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="CadetBlue" HorizontalTextAlignment="Start" Padding="0, 0"/>
-                    </CollectionView.Footer>
-
                 </CollectionView>
+
+                <Label Grid.Row="2"
+                       x:Name="SumText"
+                       Text="{Binding Sum, StringFormat='Total sum: {0:F2}'}"
+                       FontSize="16" FontAttributes="Bold"
+                       TextColor="CadetBlue"
+                       Margin="20,0,0,0"
+                       HorizontalTextAlignment="Start" />
             </Grid>
         </Grid>
     </ContentPage.Content>

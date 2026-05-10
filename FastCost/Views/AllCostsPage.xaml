@@ -9,13 +9,19 @@
         <ToolbarItem Text="" Clicked="Add_Clicked" IconImageSource="{FontImageSource Glyph='+', Size=32, FontFamily=OpenSansRegular, Color={StaticResource White}}" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions="Auto,*" Margin="5">
+    <Grid RowDefinitions="Auto,*,Auto" Margin="5">
         <Grid.GestureRecognizers>
             <SwipeGestureRecognizer Direction="Left"  Swiped="OnSwipedLeft"/>
             <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
         </Grid.GestureRecognizers>
 
         <Grid Grid.Row="0" ColumnDefinitions="*,Auto,*">
+            <Button Grid.Column="0" Text="&#x2193;" FontSize="26"
+                    BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                    WidthRequest="40" HeightRequest="44" Padding="0"
+                    HorizontalOptions="Start" Margin="5,0,0,0"
+                    Clicked="ScrollToBottom_Clicked" />
+
             <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="2">
                 <Button Text="&#x2039;" FontSize="32"
                         BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
@@ -32,12 +38,6 @@
                         WidthRequest="40" HeightRequest="44" Padding="0"
                         Clicked="OnNextMonth" />
             </HorizontalStackLayout>
-
-            <Button Grid.Column="2" Text="&#x2193;" FontSize="26"
-                    BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                    WidthRequest="40" HeightRequest="44" Padding="0"
-                    HorizontalOptions="End" Margin="0,0,5,0"
-                    Clicked="ScrollToBottom_Clicked" />
         </Grid>
 
         <!-- Display costs in a list -->
@@ -109,10 +109,15 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
 
-            <CollectionView.Footer>
-                    <Label x:Name = "SumText" Text="{Binding Sum, StringFormat='Total sum: {0:F2}'}" FontSize="16" FontAttributes="Bold" TextColor="CadetBlue" HorizontalTextAlignment="Start" Padding="0, 0" />
-            </CollectionView.Footer>
         </CollectionView>
+
+        <Label Grid.Row="2"
+               x:Name="SumText"
+               Text="{Binding Sum, StringFormat='Total sum: {0:F2}'}"
+               FontSize="16" FontAttributes="Bold"
+               TextColor="CadetBlue"
+               Margin="20,0,20,5"
+               HorizontalTextAlignment="Start" />
 
     </Grid>
 </ContentPage>

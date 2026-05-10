@@ -88,6 +88,19 @@ public partial class AnalysisPage : ContentPage
         }
     }
 
+    private void ScrollToBottom_Clicked(object sender, EventArgs e)
+    {
+        if (BindingContext is not AllCostsGroup allCostsGroup) return;
+        if (allCostsGroup.GroupCosts.Count == 0) return;
+
+        var lastGroupIdx = allCostsGroup.GroupCosts.Count - 1;
+        var lastGroup = allCostsGroup.GroupCosts[lastGroupIdx];
+        var lastItemIdx = lastGroup.Count() - 1;
+        if (lastItemIdx < 0) return;
+
+        CollectionViewGroup.ScrollTo(lastItemIdx, lastGroupIdx, ScrollToPosition.End, animate: true);
+    }
+
     private void OnPreviousMonth(object sender, EventArgs e)
     {
         if (AnalysisPageDatePicker.Date.HasValue)
