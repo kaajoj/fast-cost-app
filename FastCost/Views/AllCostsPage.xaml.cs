@@ -53,9 +53,17 @@ public partial class AllCostsPage : ContentPage
             var costs = await _allCostsService.LoadCostsByMonth(date);
             if (allCosts.SelectedDate != date) return;
 
-            var mapped = costs.Adapt<List<CostModel>>().OrderBy(c => c.Date);
+            var (mapped, sum) = await Task.Run(() =>
+            {
+                var list = costs.Adapt<List<CostModel>>();
+                list.Sort((a, b) => a.Date.CompareTo(b.Date));
+                var s = list.Sum(c => c.Value ?? 0);
+                return (list, s);
+            });
+            if (allCosts.SelectedDate != date) return;
+
             allCosts.Costs = new ObservableCollection<CostModel>(mapped);
-            allCosts.Sum = allCosts.Costs.Sum(c => c.Value ?? 0);
+            allCosts.Sum = sum;
 
             _localDataVersion = AppState.DataVersion;
             _lastLoadedDate = date;

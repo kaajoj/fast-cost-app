@@ -63,20 +63,23 @@ public partial class AnalysisPage : ContentPage
         _loadingForDate = date;
         try
         {
-            var groupCosts = (await _allCostsService.GetCostsByMonthGroupByCategory(date)).ToList();
-            if (allCostsGroup.SelectedDate != date) return;
-
-            decimal total = 0;
-            foreach (var costGroup in groupCosts)
+            var (groupCosts, total) = await Task.Run(async () =>
             {
-                decimal sumGroup = 0;
-                foreach (var cost in costGroup)
+                var groups = (await _allCostsService.GetCostsByMonthGroupByCategory(date)).ToList();
+                decimal sum = 0;
+                foreach (var costGroup in groups)
                 {
-                    sumGroup += cost.Value.GetValueOrDefault();
+                    decimal sumGroup = 0;
+                    foreach (var cost in costGroup)
+                    {
+                        sumGroup += cost.Value.GetValueOrDefault();
+                    }
+                    costGroup.Key.SumValue = sumGroup;
+                    sum += sumGroup;
                 }
-                costGroup.Key.SumValue = sumGroup;
-                total += sumGroup;
-            }
+                return (groups, sum);
+            });
+            if (allCostsGroup.SelectedDate != date) return;
 
             allCostsGroup.GroupCosts = new ObservableCollection<IGrouping<CategoryModel, CostModel>>(groupCosts);
             allCostsGroup.Sum = total;
