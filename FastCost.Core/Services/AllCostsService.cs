@@ -34,7 +34,7 @@ namespace FastCost.Core.Services
                     c.Category ??= new CategoryModel { Name = "no category" };
                     return c;
                 })
-                .GroupBy(cost => cost.Category);
+                .GroupBy(cost => cost.Category!);
         }
 
         public async Task<decimal> GetSum(DateTime date)

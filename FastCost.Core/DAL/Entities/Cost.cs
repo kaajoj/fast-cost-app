@@ -16,6 +16,6 @@ namespace FastCost.Core.DAL.Entities
         public DateTime Date { get; set; }
 
         public int? CategoryId { get; set; }
-        public Category Category { get; set; } = null!;
+        public Category? Category { get; set; }
     }
 }

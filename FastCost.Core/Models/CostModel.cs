@@ -24,7 +24,7 @@ namespace FastCost.Core.Models
         public string? Description { get; set; }
 
         public int? CategoryId { get; set; }
-        public CategoryModel Category { get; set; } = null!;
+        public CategoryModel? Category { get; set; }
 
         public string FormattedDate => Date.ToString("dd.MM");
 
