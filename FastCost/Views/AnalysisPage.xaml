@@ -29,7 +29,7 @@
     </Shell.TitleView>
 
     <ContentPage.Resources>
-        <DataTemplate x:Key="GroupHeaderTemplate">
+        <DataTemplate x:Key="GroupHeaderTemplate" x:DataType="{x:Null}">
             <HorizontalStackLayout Margin="0,8,0,2" Spacing="15">
                 <Label Text="{Binding Key.Name}" FontSize="16" FontAttributes="Bold"
                        WidthRequest="100" HorizontalTextAlignment="End" />
