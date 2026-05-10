@@ -183,6 +183,6 @@ public partial class CostPage : ContentPage
             }
         }
     }
-
-    private record CategoryItem(int Id, string Name, string Emoji);
 }
+
+public record CategoryItem(int Id, string Name, string Emoji);

@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:FastCost.Core.Models;assembly=FastCost.Core"
              x:Class="FastCost.Views.AnalysisPage"
+             x:DataType="models:AllCostsGroup"
              Title="Analysis">
 
     <Shell.TitleView>
@@ -89,7 +90,7 @@
                     </CollectionView.HeaderTemplate>
 
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:CostModel">
                             <Grid ColumnSpacing="15" HeightRequest="30">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100" />

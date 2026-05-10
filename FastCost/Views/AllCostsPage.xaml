@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:FastCost.Core.Models;assembly=FastCost.Core"
              x:Class="FastCost.Views.AllCostsPage"
+             x:DataType="models:AllCosts"
              Title="All Costs">
 
     <ContentPage.ToolbarItems>

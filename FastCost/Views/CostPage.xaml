@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:FastCost.Core.Models;assembly=FastCost.Core"
+             xmlns:views="clr-namespace:FastCost.Views"
              x:Class="FastCost.Views.CostPage"
+             x:DataType="models:CostModel"
              Title="Cost">
 
     <ContentPage.BindingContext>
@@ -61,7 +63,7 @@
                 <GridItemsLayout Orientation="Vertical" Span="4" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="views:CategoryItem">
                     <Grid Padding="4">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="CommonStates">
