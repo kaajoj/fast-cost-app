@@ -83,6 +83,14 @@ public partial class AllCostsPage : ContentPage
         await Shell.Current.GoToAsync(nameof(CostPage));
     }
 
+    private void ScrollToBottom_Clicked(object sender, EventArgs e)
+    {
+        if (BindingContext is AllCosts allCosts && allCosts.Costs.Count > 0)
+        {
+            costsCollection.ScrollTo(allCosts.Costs.Count - 1, position: ScrollToPosition.End, animate: true);
+        }
+    }
+
     private async void OnCostTapped(object sender, EventArgs e)
     {
         if (_isNavigating) return;
