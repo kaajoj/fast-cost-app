@@ -16,10 +16,11 @@
         </Grid.GestureRecognizers>
 
         <Grid Grid.Row="0" ColumnDefinitions="*,Auto,*">
-            <Button Grid.Column="0" Text="&#x2193;" FontSize="26"
+            <Button Grid.Column="0" Text="&#x2193;" FontSize="24"
                     BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                    WidthRequest="40" HeightRequest="44" Padding="0"
-                    HorizontalOptions="Start" Margin="5,0,0,0"
+                    WidthRequest="36" HeightRequest="40" Padding="0"
+                    HorizontalOptions="Start" VerticalOptions="Center"
+                    Margin="15,4,0,0"
                     Clicked="ScrollToBottom_Clicked" />
 
             <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="2">
@@ -45,7 +46,7 @@
                         Grid.Row="1"
                         ItemsSource="{Binding Costs}"
                         Header="Date            Value         Category                  Description"
-                        Margin="20"
+                        Margin="20,20,20,5"
                         SelectionMode="None">
 
             <CollectionView.HeaderTemplate>
@@ -114,7 +115,7 @@
         <Label Grid.Row="2"
                x:Name="SumText"
                Text="{Binding Sum, StringFormat='Total sum: {0:F2}'}"
-               FontSize="16" FontAttributes="Bold"
+               FontSize="17" FontAttributes="Bold"
                TextColor="CadetBlue"
                Margin="20,0,20,5"
                HorizontalTextAlignment="Start" />
