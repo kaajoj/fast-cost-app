@@ -7,14 +7,16 @@ namespace FastCost.Views;
 public partial class AnalysisPage : ContentPage
 {
     private readonly IAllCostsService _allCostsService;
+    private readonly IServiceProvider _serviceProvider;
     private int _localDataVersion = 0;
     private DateTime? _lastLoadedDate = null;
     private DateTime? _loadingForDate = null;
 
-    public AnalysisPage(IAllCostsService allCostsService)
+    public AnalysisPage(IAllCostsService allCostsService, IServiceProvider serviceProvider)
     {
         InitializeComponent();
         _allCostsService = allCostsService;
+        _serviceProvider = serviceProvider;
         this.BindingContext = new AllCostsGroup();
     }
 
@@ -25,7 +27,7 @@ public partial class AnalysisPage : ContentPage
 
     private async void OnChartClicked(object sender, EventArgs e)
     {
-        var chartPage = Handler?.MauiContext?.Services.GetService<ChartPage>();
+        var chartPage = _serviceProvider.GetService<ChartPage>();
         if (chartPage != null)
             await Navigation.PushModalAsync(new NavigationPage(chartPage));
     }
