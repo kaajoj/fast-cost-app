@@ -1,4 +1,4 @@
-﻿using FastCost.Core.Models;
+﻿using System.Globalization;
 using FastCost.Core.Services;
 
 namespace FastCost.Services
@@ -18,12 +18,13 @@ namespace FastCost.Services
 
             var filePath = Path.Combine(FileSystem.AppDataDirectory, "costsBackUp.csv");
 
-            var lines = new List<string>();
-            lines.Add("Id,Value,Description,Date,CategoryId");
+            var lines = new List<string> { "Id,Value,Description,Date,CategoryId" };
             foreach (var cost in costs)
             {
-                var description = cost.Description?.Replace("\"", "\"\"");
-                lines.Add($"{cost.Id},{cost.Value},\"{description}\",{cost.Date},{cost.CategoryId}");
+                var description = cost.Description?.Replace("\"", "\"\"") ?? string.Empty;
+                var value = cost.Value.ToString(CultureInfo.InvariantCulture);
+                var date = cost.Date.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
+                lines.Add($"{cost.Id},{value},\"{description}\",{date},{cost.CategoryId}");
             }
 
             await File.WriteAllLinesAsync(filePath, lines);
