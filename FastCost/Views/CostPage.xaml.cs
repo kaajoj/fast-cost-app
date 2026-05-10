@@ -70,12 +70,12 @@ public partial class CostPage : ContentPage
     private async Task LoadCost(string id)
     {
         int.TryParse(id, out int result);
-        if (result != 0)
-        {
-            var cost = await _costRepository.GetCostAsync(result);
-            var costModel = cost.Adapt<CostModel>();
-            BindingContext = costModel;
-        }
+        if (result == 0) return;
+
+        var cost = await _costRepository.GetCostAsync(result);
+        if (cost == null) return;
+
+        BindingContext = cost.Adapt<CostModel>();
     }
 
     private string costValue = string.Empty;
@@ -132,10 +132,6 @@ public partial class CostPage : ContentPage
     private void OnCostValueCompleted(object sender, EventArgs e)
     {
         DescriptionEditor.Focus();
-    }
-
-    private void OnDescriptionCompleted(object sender, EventArgs e)
-    {
     }
 
     private void OnCategorySelected(object sender, SelectionChangedEventArgs e)
