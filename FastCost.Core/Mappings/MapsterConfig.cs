@@ -15,8 +15,10 @@ namespace FastCost.Core.Mappings
             TypeAdapterConfig<CostModel, Cost>.NewConfig()
                 .Ignore(dest => dest.Category!);
 
-            // Compile mappers up-front so the first Adapt() call doesn't pay the ~50-100 ms JIT cost
-            TypeAdapterConfig.GlobalSettings.Compile();
+            // Compile mappers in the background so the first Adapt() call doesn't pay the
+            // JIT cost while not blocking startup. Mapster handles concurrent compile/adapt safely;
+            // if Adapt fires before the background compile finishes it just lazy-compiles itself.
+            _ = Task.Run(() => TypeAdapterConfig.GlobalSettings.Compile());
         }
     }
 }
