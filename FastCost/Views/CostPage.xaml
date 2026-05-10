@@ -28,8 +28,7 @@
                FontAttributes="Bold"
                HorizontalTextAlignment="Center"
                Margin="0,-8,0,0"
-               ReturnType="Done"
-               Completed="OnDescriptionCompleted" />
+               ReturnType="Done" />
 
         <DatePicker x:Name="costDatePicker"
                     Date="{Binding Date}"
