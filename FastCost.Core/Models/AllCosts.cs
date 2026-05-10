@@ -17,29 +17,29 @@ namespace FastCost.Core.Models
             }
         }
 
-        public DateTime selectedDate = DateTime.Now;
+        private DateTime _selectedDate = DateTime.Now;
         public DateTime SelectedDate
         {
-            get { return selectedDate; }
+            get => _selectedDate;
             set
             {
-                if (selectedDate != value)
+                if (_selectedDate != value)
                 {
-                    selectedDate = value;
+                    _selectedDate = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        public decimal sum = 0;
+        private decimal _sum = 0;
         public decimal Sum
         {
-            get { return sum; }
+            get => _sum;
             set
             {
-                if (sum != value)
+                if (_sum != value)
                 {
-                    sum = value;
+                    _sum = value;
                     OnPropertyChanged();
                 }
             }

@@ -37,15 +37,15 @@ namespace FastCost.Core.Models
             }
         }
 
-        public decimal sum = 0;
+        private decimal _sum = 0;
         public decimal Sum
         {
-            get { return sum; }
+            get => _sum;
             set
             {
-                if (sum != value)
+                if (_sum != value)
                 {
-                    sum = value;
+                    _sum = value;
                     OnPropertyChanged();
                 }
             }
