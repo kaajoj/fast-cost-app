@@ -78,6 +78,16 @@
                             IsGrouped="True"
                             GroupHeaderTemplate="{DynamicResource GroupHeaderTemplate}"
                             Margin="20,0,0,0">
+                    <CollectionView.HeaderTemplate>
+                        <DataTemplate>
+                            <HorizontalStackLayout Margin="0,0,0,4" Spacing="15">
+                                <Label Text="Category" FontSize="16" FontAttributes="Bold"
+                                       WidthRequest="100" HorizontalTextAlignment="End" />
+                                <Label Text="Sum" FontSize="16" FontAttributes="Bold" />
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.HeaderTemplate>
+
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid ColumnSpacing="15">
@@ -97,7 +107,7 @@
                        Text="{Binding Sum, StringFormat='Total sum: {0:F2}'}"
                        FontSize="17" FontAttributes="Bold"
                        TextColor="CadetBlue"
-                       Margin="5,0,0,0"
+                       Margin="5,0,0,5"
                        HorizontalTextAlignment="Start" />
             </Grid>
         </Grid>
