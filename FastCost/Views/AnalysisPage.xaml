@@ -29,10 +29,12 @@
 
     <ContentPage.Resources>
         <DataTemplate x:Key="GroupHeaderTemplate">
-            <Label Text="{Binding Key.Name}"  FontSize="16" FontAttributes="Bold" WidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="Start" />
-        </DataTemplate>
-        <DataTemplate x:Key="GroupFooterTemplate">
-            <Label Text="{Binding Key.SumValue, StringFormat='{0:F2}'}"  FontSize="16" FontAttributes="Bold" TextColor="CadetBlue" Margin="1,0,0,15" WidthRequest="100" HorizontalTextAlignment="End" HorizontalOptions="Start" />
+            <HorizontalStackLayout Margin="0,8,0,2" Spacing="15">
+                <Label Text="{Binding Key.Name}" FontSize="16" FontAttributes="Bold"
+                       WidthRequest="100" HorizontalTextAlignment="End" />
+                <Label Text="{Binding Key.SumValue, StringFormat='{0:F2}'}"
+                       FontSize="16" FontAttributes="Bold" TextColor="CadetBlue" />
+            </HorizontalStackLayout>
         </DataTemplate>
     </ContentPage.Resources>
 
@@ -75,7 +77,6 @@
                             ItemsSource="{Binding GroupCosts}"
                             IsGrouped="True"
                             GroupHeaderTemplate="{DynamicResource GroupHeaderTemplate}"
-                            GroupFooterTemplate="{DynamicResource GroupFooterTemplate}"
                             Margin="20,0,0,0">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

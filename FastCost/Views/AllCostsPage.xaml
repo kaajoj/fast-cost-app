@@ -46,7 +46,7 @@
                         Grid.Row="1"
                         ItemsSource="{Binding Costs}"
                         Header="Date            Value         Category                  Description"
-                        Margin="20,20,20,5"
+                        Margin="20,8,20,5"
                         SelectionMode="None">
 
             <CollectionView.HeaderTemplate>
