@@ -77,13 +77,13 @@
                             ItemsSource="{Binding GroupCosts}"
                             IsGrouped="True"
                             GroupHeaderTemplate="{DynamicResource GroupHeaderTemplate}"
-                            Margin="20,0,0,0">
+                            Margin="20,3,0,0">
                     <CollectionView.HeaderTemplate>
                         <DataTemplate>
                             <HorizontalStackLayout Margin="0,0,0,4" Spacing="15">
-                                <Label Text="Category" FontSize="16" FontAttributes="Bold"
+                                <Label Text="Category" FontSize="17" FontAttributes="Bold"
                                        WidthRequest="100" HorizontalTextAlignment="End" />
-                                <Label Text="Sum" FontSize="16" FontAttributes="Bold" />
+                                <Label Text="Sum" FontSize="17" FontAttributes="Bold" />
                             </HorizontalStackLayout>
                         </DataTemplate>
                     </CollectionView.HeaderTemplate>
