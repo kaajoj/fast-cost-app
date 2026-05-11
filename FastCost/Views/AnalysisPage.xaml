@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:FastCost.Core.Models;assembly=FastCost.Core"
+             x:Class="FastCost.Views.AnalysisPage"
+             x:DataType="models:AllCostsGroup"
+             Title="Analysis">
+
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*,Auto" Padding="0,0,10,0">
+            <Label Grid.Column="0"
+                   Text="Analysis"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   VerticalOptions="Center" />
+            <Button Grid.Column="1"
+                    Text="&#x1F4CA; Chart"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    BackgroundColor="White"
+                    TextColor="CadetBlue"
+                    CornerRadius="15"
+                    HeightRequest="38"
+                    Padding="14,0"
+                    Clicked="OnChartClicked" />
+        </Grid>
+    </Shell.TitleView>
+
+    <ContentPage.Resources>
+        <DataTemplate x:Key="GroupHeaderTemplate" x:DataType="{x:Null}">
+            <HorizontalStackLayout Margin="0,8,0,2" Spacing="15">
+                <Label Text="{Binding Key.Name}" FontSize="16" FontAttributes="Bold"
+                       WidthRequest="100" HorizontalTextAlignment="End" />
+                <Label Text="{Binding Key.SumValue, StringFormat='{0:F2}'}"
+                       FontSize="16" FontAttributes="Bold" TextColor="CadetBlue" />
+            </HorizontalStackLayout>
+        </DataTemplate>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Right" Swiped="OnSwipedRight"/>
+            </Grid.GestureRecognizers>
+
+            <Grid RowDefinitions="Auto,*,Auto" Margin="20,5,20,5" RowSpacing="5">
+
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto,*">
+                    <Button Grid.Column="0" Text="&#x2193;" FontSize="24"
+                            BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                            WidthRequest="36" HeightRequest="40" Padding="0"
+                            HorizontalOptions="Start" VerticalOptions="Center"
+                            Margin="0,4,0,0"
+                            Clicked="ScrollToBottom_Clicked" />
+
+                    <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="2">
+                        <Button Text="&#x2039;" FontSize="32"
+                                BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                WidthRequest="40" HeightRequest="44" Padding="0"
+                                Clicked="OnPreviousMonth" />
+                        <DatePicker x:Name="AnalysisPageDatePicker"
+                                Date="{Binding SelectedDate}"
+                                Format="MM/yyyy"
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                DateSelected="DatePicker_DateSelected"/>
+                        <Button Text="&#x203A;" FontSize="32"
+                                BackgroundColor="Transparent" TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                WidthRequest="40" HeightRequest="44" Padding="0"
+                                Clicked="OnNextMonth" />
+                    </HorizontalStackLayout>
+                </Grid>
+
+                <CollectionView x:Name="CollectionViewGroup"
+                            Grid.Row="1"
+                            ItemsSource="{Binding GroupCosts}"
+                            IsGrouped="True"
+                            GroupHeaderTemplate="{DynamicResource GroupHeaderTemplate}"
+                            Margin="20,3,0,0">
+                    <CollectionView.HeaderTemplate>
+                        <DataTemplate>
+                            <HorizontalStackLayout Margin="0,0,0,4" Spacing="15">
+                                <Label Text="Category" FontSize="17" FontAttributes="Bold"
+                                       WidthRequest="100" HorizontalTextAlignment="End" />
+                                <Label Text="Sum" FontSize="17" FontAttributes="Bold" />
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.HeaderTemplate>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:CostModel">
+                            <Grid ColumnSpacing="15" HeightRequest="30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0" Text="{Binding Value, StringFormat='{0:F2}', Mode=OneTime}" FontSize="16" Margin="1,0,0,0" HorizontalTextAlignment="End" InputTransparent="True" />
+                                <Label Grid.Column="1" Text="{Binding Description, Mode=OneTime}" FontSize="16" Margin="1,0,0,0" InputTransparent="True" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Label Grid.Row="2"
+                       x:Name="SumText"
+                       Text="{Binding Sum, StringFormat='Total sum: {0:F2}'}"
+                       FontSize="17" FontAttributes="Bold"
+                       TextColor="CadetBlue"
+                       Margin="5,0,0,5"
+                       HorizontalTextAlignment="Start" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FastCost.Views.MainPage"
+             Title="Add cost">
+
+        <Grid>
+            <Grid.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Left" Swiped="OnSwipedLeft"/>
+            </Grid.GestureRecognizers>
+
+        <VerticalStackLayout
+            Spacing="20"
+            Padding="30,120,30,0"
+            VerticalOptions="Start">
+
+            <Label
+                x:Name = "SummaryText"
+                SemanticProperties.HeadingLevel="Level2"
+                SemanticProperties.Description="test"
+                FontSize="22"
+                HorizontalOptions="Center"
+                Padding="0,40"/>
+
+            <StackLayout>
+                <Entry
+                    x:Name = "CostText"
+                    Placeholder="Enter the cost value"
+                    HorizontalTextAlignment="Center"
+                    FontSize="24"
+                    PlaceholderColor="CadetBlue"
+                    Keyboard="Numeric" 
+                    TextChanged="OnCostChanged"
+                    Completed="OnCostEntered" />
+            </StackLayout>
+
+            <StackLayout>
+                <Button 
+                    x:Name="CostBtn"
+                    Text="+" 
+                    FontSize="Large" 
+                    BackgroundColor="LightGray" 
+                    TextColor="White" 
+                    CornerRadius="40" 
+                    WidthRequest="80" 
+                    HeightRequest="80" 
+                    Clicked="OnCostEntered"
+                    HorizontalOptions="Center"/>
+            </StackLayout>
+
+        </VerticalStackLayout>
+        </Grid>
+</ContentPage>
